@@ -32,7 +32,7 @@
     .grid2{grid-template-columns:repeat(2,minmax(0,1fr))}
     .grid3{grid-template-columns:repeat(3,minmax(0,1fr))}
 
-    /* Filtre kutuları daha nizami */
+    /* Filtre kutuları başlangıç stilleri (sonda sadeleştirme override var) */
     .grid2 label,.grid3 label{
       display:flex;
       gap:8px;
@@ -140,6 +140,94 @@
     }
     .info-row strong{ color:var(--text); }
 
+    /* ===== Mobilde kart görünümü ===== */
+    .mobile-cards{
+      display:none;
+      padding:10px;
+      gap:10px;
+    }
+
+    .mobile-card{
+      background:var(--panel2);
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:10px;
+    }
+
+    .mobile-card .mc-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:8px;
+      margin-bottom:8px;
+    }
+
+    .mobile-card .mc-title{
+      font-weight:700;
+      font-size:13px;
+      line-height:1.3;
+    }
+
+    .mobile-card .mc-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:6px 10px;
+      margin-top:6px;
+    }
+
+    .mobile-card .mc-row{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      background:rgba(255,255,255,.01);
+      border:1px solid rgba(255,255,255,.04);
+      border-radius:8px;
+      padding:7px 8px;
+    }
+
+    .mobile-card .mc-label{
+      font-size:10px;
+      color:var(--muted);
+      line-height:1.1;
+    }
+
+    .mobile-card .mc-val{
+      font-size:12px;
+      font-weight:600;
+      line-height:1.2;
+    }
+
+    .mobile-card .mc-profit{
+      margin-top:8px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+    }
+
+    .mobile-card .mc-profit .box{
+      border:1px solid var(--line);
+      border-radius:10px;
+      padding:8px;
+      background:#141922;
+    }
+
+    .mobile-card .mc-profit .box .lbl{
+      font-size:10px;
+      color:var(--muted);
+    }
+
+    .mobile-card .mc-profit .box .val{
+      margin-top:3px;
+      font-size:13px;
+      font-weight:700;
+    }
+
+    .mobile-empty{
+      color:var(--muted);
+      padding:12px;
+      font-size:13px;
+    }
+
     @media (max-width: 1200px){
       .app,.app.kapali{grid-template-columns:1fr}
       .ustbar{grid-template-columns:1fr}
@@ -147,15 +235,24 @@
       .scroll{max-height:60vh}
     }
 
-    /* ===== Mobil optimizasyon ===== */
     @media (max-width: 768px){
-      body{font-size:14px}
-      .app{padding:8px;gap:8px}
-      .panel{border-radius:10px;padding:10px}
-      #sol{overflow:visible}
+      .app, .app.kapali{
+        grid-template-columns:1fr;
+        padding:8px;
+        gap:8px;
+      }
 
-      .sol-ust{align-items:center;gap:10px}
-      .menu-btn{width:44px;height:44px;font-size:18px}
+      /* Mobilde kapalı sınıf olsa da filtre içeriğini göster */
+      .app.kapali .sol-baslik,
+      .app.kapali .sol-icerik{
+        display:block;
+      }
+
+      body{font-size:14px}
+      .panel{border-radius:10px;padding:10px}
+      #sol{overflow:visible;padding:10px}
+      .sol-ust{align-items:center;gap:10px;margin-bottom:4px}
+      .menu-btn{display:none;} /* mobilde gizle */
       h3{font-size:14px;margin-bottom:8px}
 
       .satir{
@@ -174,20 +271,12 @@
         padding:10px;
       }
 
-      /* Filtre kutuları mobilde daha düzenli */
       .grid2{
         grid-template-columns:1fr 1fr;
         gap:8px;
       }
       .grid3{
         grid-template-columns:1fr 1fr;
-        gap:8px;
-      }
-      .grid2 label,.grid3 label{
-        min-height:44px;
-        padding:10px;
-        border-radius:10px;
-        font-size:13px;
         gap:8px;
       }
 
@@ -215,10 +304,11 @@
       .stat .val{font-size:15px}
 
       .tools{
+        display:flex;
         flex-direction:column;
         align-items:stretch;
-        padding:8px 8px 0;
         gap:6px;
+        padding:8px 8px 0;
       }
       .tools input{
         min-width:0;
@@ -229,31 +319,17 @@
       .tools .chip{
         width:100%;
         justify-content:center;
+        flex-wrap:wrap;
+        font-size:11px;
       }
 
+      /* Mobilde tabloyu gizle, kartları göster */
       .scroll{
-        max-height:62vh;
-        overflow:auto;
-        -webkit-overflow-scrolling:touch;
-      }
-
-      /* Mobilde tabloyu rahatlat */
-      table{
-        min-width:760px;
-        font-size:12px;
-      }
-      thead th, tbody td{
-        padding:7px 6px;
-      }
-
-      /* Daha az önemli kolonları gizle: 8-9-10 */
-      thead th:nth-child(8),
-      thead th:nth-child(9),
-      thead th:nth-child(10),
-      tbody td:nth-child(8),
-      tbody td:nth-child(9),
-      tbody td:nth-child(10){
         display:none;
+      }
+
+      .mobile-cards{
+        display:grid;
       }
 
       .qbadge{
@@ -278,11 +354,65 @@
     }
 
     @media (max-width: 480px){
-      .grid2{grid-template-columns:1fr}
-      .grid3{grid-template-columns:1fr}
-      .stats{grid-template-columns:1fr}
-      table{min-width:680px}
+      .grid2, .grid3{
+        grid-template-columns:1fr;
+      }
+
+      .stats{
+        grid-template-columns:1fr;
+      }
+
+      .mobile-card .mc-grid,
+      .mobile-card .mc-profit{
+        grid-template-columns:1fr;
+      }
+
       .small{font-size:11px}
+    }
+
+    /* ===== Filtre kutularını sadeleştir / küçült (son override) ===== */
+    .grid2, .grid3{
+      gap: 6px;
+    }
+
+    .grid2 label,
+    .grid3 label{
+      background: transparent !important;
+      border: none !important;
+      border-radius: 0 !important;
+      min-height: auto !important;
+      padding: 2px 0 !important;
+      font-size: 12px !important;
+      gap: 6px !important;
+      line-height: 1.2;
+    }
+
+    .grid2 label input[type="checkbox"],
+    .grid3 label input[type="checkbox"]{
+      transform: scale(0.9);
+      margin: 0;
+    }
+
+    .bolum h3{
+      margin-bottom: 6px;
+    }
+
+    @media (max-width: 768px){
+      .grid2, .grid3{
+        gap: 4px;
+      }
+
+      .grid2 label,
+      .grid3 label{
+        padding: 1px 0 !important;
+        font-size: 12px !important;
+        gap: 5px !important;
+      }
+
+      .grid2 label input[type="checkbox"],
+      .grid3 label input[type="checkbox"]{
+        transform: scale(0.85);
+      }
     }
   </style>
 </head>
@@ -464,6 +594,8 @@
         <span class="chip" id="bmDoluHap">0 BM kayıt</span>
         <span class="chip" id="kesintiModuHap">Kesinti: %4 Açık | %2.5 Açık</span>
       </div>
+
+      <div id="mobilKartlar" class="mobile-cards"></div>
 
       <div class="scroll">
         <table>
@@ -927,6 +1059,78 @@ function tabloyuCiz(rows){
   }
 }
 
+function mobilKartlariCiz(rows){
+  const wrap = document.getElementById("mobilKartlar");
+  if(!wrap) return;
+
+  wrap.innerHTML = "";
+
+  if(!rows.length){
+    wrap.innerHTML = `<div class="mobile-empty">Sonuç bulunamadı. (Filtre çok sıkı olabilir veya BM buy yok)</div>`;
+    return;
+  }
+
+  for(const r of rows){
+    const netCls = r.netProfit >= 0 ? "profit" : "loss";
+    const pctCls = r.profitPercent >= 0 ? "profit" : "loss";
+
+    const card = document.createElement("div");
+    card.className = "mobile-card";
+    card.innerHTML = `
+      <div class="mc-head">
+        <div class="mc-title">${itemUi(r)} ${qBadge(r)}</div>
+      </div>
+
+      <div class="mc-grid">
+        <div class="mc-row">
+          <div class="mc-label">Kategori</div>
+          <div class="mc-val">${mainCatUi(r.mainCategory)}</div>
+        </div>
+
+        <div class="mc-row">
+          <div class="mc-label">Kaynak Şehir</div>
+          <div class="mc-val">${r.sourceCity}</div>
+        </div>
+
+        <div class="mc-row">
+          <div class="mc-label">Tier / Enchant</div>
+          <div class="mc-val">${r.tier ? "T"+r.tier : "-"} / .${Number(r.enchant || 0)}</div>
+        </div>
+
+        <div class="mc-row">
+          <div class="mc-label">Şehir Fiyatı</div>
+          <div class="mc-val">${trNum(Math.round(r.cityPrice))}</div>
+        </div>
+
+        <div class="mc-row">
+          <div class="mc-label">BM Fiyatı</div>
+          <div class="mc-val">${trNum(Math.round(r.bmPrice))}</div>
+        </div>
+
+        <div class="mc-row">
+          <div class="mc-label">Veri Yaşı</div>
+          <div class="mc-val">
+            <span class="${yasClass(r.cityAgeMin)}">Şehir: ${sureText(r.cityAgeMin)}</span><br>
+            <span class="${yasClass(r.bmAgeMin)}">BM: ${sureText(r.bmAgeMin)}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mc-profit">
+        <div class="box">
+          <div class="lbl">Net Kâr</div>
+          <div class="val ${netCls}">${trNum(Math.round(r.netProfit))}</div>
+        </div>
+        <div class="box">
+          <div class="lbl">Kâr %</div>
+          <div class="val ${pctCls}">${pct(r.profitPercent)}</div>
+        </div>
+      </div>
+    `;
+    wrap.appendChild(card);
+  }
+}
+
 function statsCiz(tumRows, gorunenRows){
   const toplam = tumRows.length;
   const enIyi = gorunenRows.length ? Math.max(...gorunenRows.map(x=>x.netProfit)) : 0;
@@ -960,6 +1164,7 @@ function tumunuYenidenCiz(){
   const hesapli = satirlariHesapla(hamVeri, cfg);
   gorunenVeri = satirlariFiltrele(hesapli, cfg);
   tabloyuCiz(gorunenVeri);
+  mobilKartlariCiz(gorunenVeri);
   statsCiz(hesapli, gorunenVeri);
   kesintiChipGuncelle();
 
@@ -1002,9 +1207,11 @@ function solAyar(acik){
   localStorage.setItem("bmFlip_solAcik", acik ? "1" : "0");
 }
 function solDurumYukle(){
-  /* Mobilde filtreler açık başlasın, masaüstünde kapalı */
-  const mobil = window.innerWidth <= 768;
-  solAyar(mobil ? true : false);
+  if(window.innerWidth <= 768){
+    document.getElementById("app").classList.remove("kapali");
+    return;
+  }
+  solAyar(false);
 }
 function dilAyarla(d){
   aktifDil = (d === "en") ? "en" : "tr";
@@ -1023,7 +1230,10 @@ function ilkAcilisKategoriAyarla(){
 }
 
 function bindEvents(){
-  document.getElementById("toggleSol").addEventListener("click", ()=>solAyar(!solAcikMi()));
+  const toggle = document.getElementById("toggleSol");
+  if(toggle){
+    toggle.addEventListener("click", ()=>solAyar(!solAcikMi()));
+  }
   document.getElementById("veriGuncelleBtn").addEventListener("click", canliGuncelle);
 
   document.getElementById("aramaKutusu").addEventListener("input", tumunuYenidenCiz);
@@ -1057,16 +1267,18 @@ function bindEvents(){
       tumunuYenidenCiz();
     });
   });
+
+  window.addEventListener("resize", ()=>{
+    solDurumYukle();
+    tumunuYenidenCiz();
+  });
 }
 
 async function init(){
-  // İlk açılışta kategoriyi sadece Çantalar yap
   ilkAcilisKategoriAyarla();
-
   bindEvents();
   solDurumYukle();
 
-  // Mobilde performans için sonuç limiti biraz düşürülebilir
   if(window.innerWidth <= 768){
     document.getElementById("sonucLimiti").value = 150;
   }
@@ -1075,7 +1287,6 @@ async function init(){
   dilAyarla(aktifDil);
   tumunuYenidenCiz();
 
-  // İlk veri çekme: sadece Çantalar seçili
   await canliGuncelle();
 }
 init();
