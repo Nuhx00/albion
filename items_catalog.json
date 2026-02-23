@@ -1,0 +1,1880 @@
+[
+  {
+    "baseId": "2H_ARCANESTAFF",
+    "nameEn": "2H Arcanestaff",
+    "nameTr": "2H Arcanestaff",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_ARCANESTAFF_HELL",
+    "nameEn": "2H Arcanestaff Hell",
+    "nameTr": "2H Arcanestaff Hell",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_ARCANE_RINGPAIR_AVALON",
+    "nameEn": "2H Arcane Ringpair Avalon",
+    "nameTr": "2H Arcane Ringpair Avalon",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_AXE",
+    "nameEn": "2H AXE",
+    "nameTr": "2H AXE",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_AXE_AVALON",
+    "nameEn": "2H AXE Avalon",
+    "nameTr": "2H AXE Avalon",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_BOW",
+    "nameEn": "2H BOW",
+    "nameTr": "2H BOW",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_BOW_AVALON",
+    "nameEn": "2H BOW Avalon",
+    "nameTr": "2H BOW Avalon",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_BOW_HELL",
+    "nameEn": "2H BOW Hell",
+    "nameTr": "2H BOW Hell",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_BOW_KEEPER",
+    "nameEn": "2H BOW Keeper",
+    "nameTr": "2H BOW Keeper",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_CLAWPAIR",
+    "nameEn": "2H Clawpair",
+    "nameTr": "2H Clawpair",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_CLAYMORE",
+    "nameEn": "2H Claymore",
+    "nameTr": "2H Claymore",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_CLAYMORE_AVALON",
+    "nameEn": "2H Claymore Avalon",
+    "nameTr": "2H Claymore Avalon",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_CLEAVER_HELL",
+    "nameEn": "2H Cleaver Hell",
+    "nameTr": "2H Cleaver Hell",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_COMBATSTAFF_MORGANA",
+    "nameEn": "2H Combatstaff Morgana",
+    "nameTr": "2H Combatstaff Morgana",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_CROSSBOW",
+    "nameEn": "2H Crossbow",
+    "nameTr": "2H Crossbow",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_CROSSBOWLARGE",
+    "nameEn": "2H Crossbowlarge",
+    "nameTr": "2H Crossbowlarge",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_CROSSBOWLARGE_MORGANA",
+    "nameEn": "2H Crossbowlarge Morgana",
+    "nameTr": "2H Crossbowlarge Morgana",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_CROSSBOW_CANNON_AVALON",
+    "nameEn": "2H Crossbow Cannon Avalon",
+    "nameTr": "2H Crossbow Cannon Avalon",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_CURSEDSTAFF",
+    "nameEn": "2H Cursedstaff",
+    "nameTr": "2H Cursedstaff",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_CURSEDSTAFF_MORGANA",
+    "nameEn": "2H Cursedstaff Morgana",
+    "nameTr": "2H Cursedstaff Morgana",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_DAGGERPAIR",
+    "nameEn": "2H Daggerpair",
+    "nameTr": "2H Daggerpair",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_DAGGER_KATAR_AVALON",
+    "nameEn": "2H Dagger Katar Avalon",
+    "nameTr": "2H Dagger Katar Avalon",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_DEMONICSTAFF",
+    "nameEn": "2H Demonicstaff",
+    "nameTr": "2H Demonicstaff",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_DIVINESTAFF",
+    "nameEn": "2H Divinestaff",
+    "nameTr": "2H Divinestaff",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_DOUBLEBLADEDSTAFF",
+    "nameEn": "2H Doublebladedstaff",
+    "nameTr": "2H Doublebladedstaff",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_DUALAXE_KEEPER",
+    "nameEn": "2H Dualaxe Keeper",
+    "nameTr": "2H Dualaxe Keeper",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_DUALCROSSBOW_HELL",
+    "nameEn": "2H Dualcrossbow Hell",
+    "nameTr": "2H Dualcrossbow Hell",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_DUALHAMMER_HELL",
+    "nameEn": "2H Dualhammer Hell",
+    "nameTr": "2H Dualhammer Hell",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_DUALMACE_AVALON",
+    "nameEn": "2H Dualmace Avalon",
+    "nameTr": "2H Dualmace Avalon",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_DUALSCIMITAR_UNDEAD",
+    "nameEn": "2H Dualscimitar Undead",
+    "nameTr": "2H Dualscimitar Undead",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_DUALSICKLE_UNDEAD",
+    "nameEn": "2H Dualsickle Undead",
+    "nameTr": "2H Dualsickle Undead",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_DUALSWORD",
+    "nameEn": "2H Dualsword",
+    "nameTr": "2H Dualsword",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_ENIGMATICORB_MORGANA",
+    "nameEn": "2H Enigmaticorb Morgana",
+    "nameTr": "2H Enigmaticorb Morgana",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_ENIGMATICSTAFF",
+    "nameEn": "2H Enigmaticstaff",
+    "nameTr": "2H Enigmaticstaff",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_FIRESTAFF",
+    "nameEn": "2H Firestaff",
+    "nameTr": "2H Firestaff",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_FIRESTAFF_HELL",
+    "nameEn": "2H Firestaff Hell",
+    "nameTr": "2H Firestaff Hell",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_FIRE_RINGPAIR_AVALON",
+    "nameEn": "2H Fire Ringpair Avalon",
+    "nameTr": "2H Fire Ringpair Avalon",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_FLAIL",
+    "nameEn": "2H Flail",
+    "nameTr": "2H Flail",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_FROSTSTAFF",
+    "nameEn": "2H Froststaff",
+    "nameTr": "2H Froststaff",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_GLACIALSTAFF",
+    "nameEn": "2H Glacialstaff",
+    "nameTr": "2H Glacialstaff",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_GLAIVE",
+    "nameEn": "2H Glaive",
+    "nameTr": "2H Glaive",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_HALBERD",
+    "nameEn": "2H Halberd",
+    "nameTr": "2H Halberd",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_HALBERD_MORGANA",
+    "nameEn": "2H Halberd Morgana",
+    "nameTr": "2H Halberd Morgana",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_HAMMER",
+    "nameEn": "2H Hammer",
+    "nameTr": "2H Hammer",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_HAMMER_AVALON",
+    "nameEn": "2H Hammer Avalon",
+    "nameTr": "2H Hammer Avalon",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_HAMMER_UNDEAD",
+    "nameEn": "2H Hammer Undead",
+    "nameTr": "2H Hammer Undead",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_HARPOON_HELL",
+    "nameEn": "2H Harpoon Hell",
+    "nameTr": "2H Harpoon Hell",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_HOLYSTAFF",
+    "nameEn": "2H Holystaff",
+    "nameTr": "2H Holystaff",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_HOLYSTAFF_HELL",
+    "nameEn": "2H Holystaff Hell",
+    "nameTr": "2H Holystaff Hell",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_HOLYSTAFF_UNDEAD",
+    "nameEn": "2H Holystaff Undead",
+    "nameTr": "2H Holystaff Undead",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_ICECRYSTAL_UNDEAD",
+    "nameEn": "2H Icecrystal Undead",
+    "nameTr": "2H Icecrystal Undead",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_ICEGAUNTLETS_HELL",
+    "nameEn": "2H Icegauntlets Hell",
+    "nameTr": "2H Icegauntlets Hell",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_INFERNOSTAFF",
+    "nameEn": "2H Infernostaff",
+    "nameTr": "2H Infernostaff",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_INFERNOSTAFF_MORGANA",
+    "nameEn": "2H Infernostaff Morgana",
+    "nameTr": "2H Infernostaff Morgana",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_IRONCLADEDSTAFF",
+    "nameEn": "2H Ironcladedstaff",
+    "nameTr": "2H Ironcladedstaff",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_IRONGAUNTLETS_HELL",
+    "nameEn": "2H Irongauntlets Hell",
+    "nameTr": "2H Irongauntlets Hell",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_LONGBOW",
+    "nameEn": "2H Longbow",
+    "nameTr": "2H Longbow",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_LONGBOW_UNDEAD",
+    "nameEn": "2H Longbow Undead",
+    "nameTr": "2H Longbow Undead",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_MACE",
+    "nameEn": "2H Mace",
+    "nameTr": "2H Mace",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_MACE_MORGANA",
+    "nameEn": "2H Mace Morgana",
+    "nameTr": "2H Mace Morgana",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_NATURESTAFF",
+    "nameEn": "2H Naturestaff",
+    "nameTr": "2H Naturestaff",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_NATURESTAFF_HELL",
+    "nameEn": "2H Naturestaff Hell",
+    "nameTr": "2H Naturestaff Hell",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_NATURESTAFF_KEEPER",
+    "nameEn": "2H Naturestaff Keeper",
+    "nameTr": "2H Naturestaff Keeper",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_POLEHAMMER",
+    "nameEn": "2H Polehammer",
+    "nameTr": "2H Polehammer",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_QUARTERSTAFF",
+    "nameEn": "2H Quarterstaff",
+    "nameTr": "2H Quarterstaff",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_QUARTERSTAFF_AVALON",
+    "nameEn": "2H Quarterstaff Avalon",
+    "nameTr": "2H Quarterstaff Avalon",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_RAM_KEEPER",
+    "nameEn": "2H RAM Keeper",
+    "nameTr": "2H RAM Keeper",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_REPEATINGCROSSBOW_UNDEAD",
+    "nameEn": "2H Repeatingcrossbow Undead",
+    "nameTr": "2H Repeatingcrossbow Undead",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_ROCKSTAFF_KEEPER",
+    "nameEn": "2H Rockstaff Keeper",
+    "nameTr": "2H Rockstaff Keeper",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_SCYTHE_HELL",
+    "nameEn": "2H Scythe Hell",
+    "nameTr": "2H Scythe Hell",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_SKULLORB_HELL",
+    "nameEn": "2H Skullorb Hell",
+    "nameTr": "2H Skullorb Hell",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_SPEAR",
+    "nameEn": "2H Spear",
+    "nameTr": "2H Spear",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_TOOL_AXE",
+    "nameEn": "2H Tool AXE",
+    "nameTr": "2H Tool AXE",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_TOOL_AXE_AVALON",
+    "nameEn": "2H Tool AXE Avalon",
+    "nameTr": "2H Tool AXE Avalon",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_TOOL_FISHINGROD",
+    "nameEn": "2H Tool Fishingrod",
+    "nameTr": "2H Tool Fishingrod",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_TOOL_FISHINGROD_AVALON",
+    "nameEn": "2H Tool Fishingrod Avalon",
+    "nameTr": "2H Tool Fishingrod Avalon",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_TOOL_HAMMER",
+    "nameEn": "2H Tool Hammer",
+    "nameTr": "2H Tool Hammer",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_TOOL_HAMMER_AVALON",
+    "nameEn": "2H Tool Hammer Avalon",
+    "nameTr": "2H Tool Hammer Avalon",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_TOOL_KNIFE",
+    "nameEn": "2H Tool Knife",
+    "nameTr": "2H Tool Knife",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_TOOL_KNIFE_AVALON",
+    "nameEn": "2H Tool Knife Avalon",
+    "nameTr": "2H Tool Knife Avalon",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_TOOL_PICK",
+    "nameEn": "2H Tool Pick",
+    "nameTr": "2H Tool Pick",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_TOOL_PICK_AVALON",
+    "nameEn": "2H Tool Pick Avalon",
+    "nameTr": "2H Tool Pick Avalon",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_TOOL_SICKLE",
+    "nameEn": "2H Tool Sickle",
+    "nameTr": "2H Tool Sickle",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_TOOL_SICKLE_AVALON",
+    "nameEn": "2H Tool Sickle Avalon",
+    "nameTr": "2H Tool Sickle Avalon",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_TOOL_SIEGEHAMMER",
+    "nameEn": "2H Tool Siegehammer",
+    "nameTr": "2H Tool Siegehammer",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_TOOL_SIEGEHAMMER_AVALON",
+    "nameEn": "2H Tool Siegehammer Avalon",
+    "nameTr": "2H Tool Siegehammer Avalon",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_TRIDENT_UNDEAD",
+    "nameEn": "2H Trident Undead",
+    "nameTr": "2H Trident Undead",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_TWINSCYTHE_HELL",
+    "nameEn": "2H Twinscythe Hell",
+    "nameTr": "2H Twinscythe Hell",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_WARBOW",
+    "nameEn": "2H Warbow",
+    "nameTr": "2H Warbow",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "2H_WILDSTAFF",
+    "nameEn": "2H Wildstaff",
+    "nameTr": "2H Wildstaff",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "ARMOR_CLOTH_AVALON",
+    "nameEn": "Armor Cloth Avalon",
+    "nameTr": "Armor Cloth Avalon",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_CLOTH_HELL",
+    "nameEn": "Armor Cloth Hell",
+    "nameTr": "Armor Cloth Hell",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_CLOTH_KEEPER",
+    "nameEn": "Armor Cloth Keeper",
+    "nameTr": "Armor Cloth Keeper",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_CLOTH_MORGANA",
+    "nameEn": "Armor Cloth Morgana",
+    "nameTr": "Armor Cloth Morgana",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_CLOTH_ROYAL",
+    "nameEn": "Armor Cloth Royal",
+    "nameTr": "Armor Cloth Royal",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_CLOTH_SET1",
+    "nameEn": "Armor Cloth Set1",
+    "nameTr": "Armor Cloth Set1",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_CLOTH_SET2",
+    "nameEn": "Armor Cloth Set2",
+    "nameTr": "Armor Cloth Set2",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_CLOTH_SET3",
+    "nameEn": "Armor Cloth Set3",
+    "nameTr": "Armor Cloth Set3",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_GATHERER_FIBER",
+    "nameEn": "Armor Gatherer Fiber",
+    "nameTr": "Armor Gatherer Fiber",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_GATHERER_FISH",
+    "nameEn": "Armor Gatherer Fish",
+    "nameTr": "Armor Gatherer Fish",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_GATHERER_HIDE",
+    "nameEn": "Armor Gatherer Hide",
+    "nameTr": "Armor Gatherer Hide",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_GATHERER_ORE",
+    "nameEn": "Armor Gatherer ORE",
+    "nameTr": "Armor Gatherer ORE",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_GATHERER_ROCK",
+    "nameEn": "Armor Gatherer Rock",
+    "nameTr": "Armor Gatherer Rock",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_GATHERER_WOOD",
+    "nameEn": "Armor Gatherer Wood",
+    "nameTr": "Armor Gatherer Wood",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_LEATHER_AVALON",
+    "nameEn": "Armor Leather Avalon",
+    "nameTr": "Armor Leather Avalon",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_LEATHER_HELL",
+    "nameEn": "Armor Leather Hell",
+    "nameTr": "Armor Leather Hell",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_LEATHER_MORGANA",
+    "nameEn": "Armor Leather Morgana",
+    "nameTr": "Armor Leather Morgana",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_LEATHER_ROYAL",
+    "nameEn": "Armor Leather Royal",
+    "nameTr": "Armor Leather Royal",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_LEATHER_SET1",
+    "nameEn": "Armor Leather Set1",
+    "nameTr": "Armor Leather Set1",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_LEATHER_SET2",
+    "nameEn": "Armor Leather Set2",
+    "nameTr": "Armor Leather Set2",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_LEATHER_SET3",
+    "nameEn": "Armor Leather Set3",
+    "nameTr": "Armor Leather Set3",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_LEATHER_UNDEAD",
+    "nameEn": "Armor Leather Undead",
+    "nameTr": "Armor Leather Undead",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_PLATE_AVALON",
+    "nameEn": "Armor Plate Avalon",
+    "nameTr": "Armor Plate Avalon",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_PLATE_HELL",
+    "nameEn": "Armor Plate Hell",
+    "nameTr": "Armor Plate Hell",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_PLATE_KEEPER",
+    "nameEn": "Armor Plate Keeper",
+    "nameTr": "Armor Plate Keeper",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_PLATE_ROYAL",
+    "nameEn": "Armor Plate Royal",
+    "nameTr": "Armor Plate Royal",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_PLATE_SET1",
+    "nameEn": "Armor Plate Set1",
+    "nameTr": "Armor Plate Set1",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_PLATE_SET2",
+    "nameEn": "Armor Plate Set2",
+    "nameTr": "Armor Plate Set2",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_PLATE_SET3",
+    "nameEn": "Armor Plate Set3",
+    "nameTr": "Armor Plate Set3",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_PLATE_UNDEAD",
+    "nameEn": "Armor Plate Undead",
+    "nameTr": "Armor Plate Undead",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_PLATE_VANITY_PERFTEST_HIGH",
+    "nameEn": "Armor Plate Vanity Perftest High",
+    "nameTr": "Armor Plate Vanity Perftest High",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_PLATE_VANITY_PERFTEST_MESHONLY",
+    "nameEn": "Armor Plate Vanity Perftest Meshonly",
+    "nameTr": "Armor Plate Vanity Perftest Meshonly",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_PLATE_VANITY_PERFTEST_PARTICLEONLY",
+    "nameEn": "Armor Plate Vanity Perftest Particleonly",
+    "nameTr": "Armor Plate Vanity Perftest Particleonly",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARMOR_PLATE_VANITY_PERFTEST_VERYHIGH",
+    "nameEn": "Armor Plate Vanity Perftest Veryhigh",
+    "nameTr": "Armor Plate Vanity Perftest Veryhigh",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARTEFACT_ARMOR_CLOTH_AVALON",
+    "nameEn": "Artefact Armor Cloth Avalon",
+    "nameTr": "Artefact Armor Cloth Avalon",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARTEFACT_ARMOR_CLOTH_HELL",
+    "nameEn": "Artefact Armor Cloth Hell",
+    "nameTr": "Artefact Armor Cloth Hell",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARTEFACT_ARMOR_CLOTH_KEEPER",
+    "nameEn": "Artefact Armor Cloth Keeper",
+    "nameTr": "Artefact Armor Cloth Keeper",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARTEFACT_ARMOR_CLOTH_MORGANA",
+    "nameEn": "Artefact Armor Cloth Morgana",
+    "nameTr": "Artefact Armor Cloth Morgana",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARTEFACT_ARMOR_LEATHER_AVALON",
+    "nameEn": "Artefact Armor Leather Avalon",
+    "nameTr": "Artefact Armor Leather Avalon",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARTEFACT_ARMOR_LEATHER_HELL",
+    "nameEn": "Artefact Armor Leather Hell",
+    "nameTr": "Artefact Armor Leather Hell",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARTEFACT_ARMOR_LEATHER_MORGANA",
+    "nameEn": "Artefact Armor Leather Morgana",
+    "nameTr": "Artefact Armor Leather Morgana",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARTEFACT_ARMOR_LEATHER_UNDEAD",
+    "nameEn": "Artefact Armor Leather Undead",
+    "nameTr": "Artefact Armor Leather Undead",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARTEFACT_ARMOR_PLATE_AVALON",
+    "nameEn": "Artefact Armor Plate Avalon",
+    "nameTr": "Artefact Armor Plate Avalon",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARTEFACT_ARMOR_PLATE_HELL",
+    "nameEn": "Artefact Armor Plate Hell",
+    "nameTr": "Artefact Armor Plate Hell",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARTEFACT_ARMOR_PLATE_KEEPER",
+    "nameEn": "Artefact Armor Plate Keeper",
+    "nameTr": "Artefact Armor Plate Keeper",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARTEFACT_ARMOR_PLATE_UNDEAD",
+    "nameEn": "Artefact Armor Plate Undead",
+    "nameTr": "Artefact Armor Plate Undead",
+    "category": "Chest"
+  },
+  {
+    "baseId": "ARTEFACT_HEAD_CLOTH_AVALON",
+    "nameEn": "Artefact Head Cloth Avalon",
+    "nameTr": "Artefact Head Cloth Avalon",
+    "category": "Head"
+  },
+  {
+    "baseId": "ARTEFACT_HEAD_CLOTH_HELL",
+    "nameEn": "Artefact Head Cloth Hell",
+    "nameTr": "Artefact Head Cloth Hell",
+    "category": "Head"
+  },
+  {
+    "baseId": "ARTEFACT_HEAD_CLOTH_KEEPER",
+    "nameEn": "Artefact Head Cloth Keeper",
+    "nameTr": "Artefact Head Cloth Keeper",
+    "category": "Head"
+  },
+  {
+    "baseId": "ARTEFACT_HEAD_CLOTH_MORGANA",
+    "nameEn": "Artefact Head Cloth Morgana",
+    "nameTr": "Artefact Head Cloth Morgana",
+    "category": "Head"
+  },
+  {
+    "baseId": "ARTEFACT_HEAD_LEATHER_AVALON",
+    "nameEn": "Artefact Head Leather Avalon",
+    "nameTr": "Artefact Head Leather Avalon",
+    "category": "Head"
+  },
+  {
+    "baseId": "ARTEFACT_HEAD_LEATHER_HELL",
+    "nameEn": "Artefact Head Leather Hell",
+    "nameTr": "Artefact Head Leather Hell",
+    "category": "Head"
+  },
+  {
+    "baseId": "ARTEFACT_HEAD_LEATHER_MORGANA",
+    "nameEn": "Artefact Head Leather Morgana",
+    "nameTr": "Artefact Head Leather Morgana",
+    "category": "Head"
+  },
+  {
+    "baseId": "ARTEFACT_HEAD_LEATHER_UNDEAD",
+    "nameEn": "Artefact Head Leather Undead",
+    "nameTr": "Artefact Head Leather Undead",
+    "category": "Head"
+  },
+  {
+    "baseId": "ARTEFACT_HEAD_PLATE_AVALON",
+    "nameEn": "Artefact Head Plate Avalon",
+    "nameTr": "Artefact Head Plate Avalon",
+    "category": "Head"
+  },
+  {
+    "baseId": "ARTEFACT_HEAD_PLATE_HELL",
+    "nameEn": "Artefact Head Plate Hell",
+    "nameTr": "Artefact Head Plate Hell",
+    "category": "Head"
+  },
+  {
+    "baseId": "ARTEFACT_HEAD_PLATE_KEEPER",
+    "nameEn": "Artefact Head Plate Keeper",
+    "nameTr": "Artefact Head Plate Keeper",
+    "category": "Head"
+  },
+  {
+    "baseId": "ARTEFACT_HEAD_PLATE_UNDEAD",
+    "nameEn": "Artefact Head Plate Undead",
+    "nameTr": "Artefact Head Plate Undead",
+    "category": "Head"
+  },
+  {
+    "baseId": "ARTEFACT_SHOES_CLOTH_AVALON",
+    "nameEn": "Artefact Shoes Cloth Avalon",
+    "nameTr": "Artefact Shoes Cloth Avalon",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "ARTEFACT_SHOES_CLOTH_HELL",
+    "nameEn": "Artefact Shoes Cloth Hell",
+    "nameTr": "Artefact Shoes Cloth Hell",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "ARTEFACT_SHOES_CLOTH_KEEPER",
+    "nameEn": "Artefact Shoes Cloth Keeper",
+    "nameTr": "Artefact Shoes Cloth Keeper",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "ARTEFACT_SHOES_CLOTH_MORGANA",
+    "nameEn": "Artefact Shoes Cloth Morgana",
+    "nameTr": "Artefact Shoes Cloth Morgana",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "ARTEFACT_SHOES_LEATHER_AVALON",
+    "nameEn": "Artefact Shoes Leather Avalon",
+    "nameTr": "Artefact Shoes Leather Avalon",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "ARTEFACT_SHOES_LEATHER_HELL",
+    "nameEn": "Artefact Shoes Leather Hell",
+    "nameTr": "Artefact Shoes Leather Hell",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "ARTEFACT_SHOES_LEATHER_MORGANA",
+    "nameEn": "Artefact Shoes Leather Morgana",
+    "nameTr": "Artefact Shoes Leather Morgana",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "ARTEFACT_SHOES_LEATHER_UNDEAD",
+    "nameEn": "Artefact Shoes Leather Undead",
+    "nameTr": "Artefact Shoes Leather Undead",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "ARTEFACT_SHOES_PLATE_AVALON",
+    "nameEn": "Artefact Shoes Plate Avalon",
+    "nameTr": "Artefact Shoes Plate Avalon",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "ARTEFACT_SHOES_PLATE_HELL",
+    "nameEn": "Artefact Shoes Plate Hell",
+    "nameTr": "Artefact Shoes Plate Hell",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "ARTEFACT_SHOES_PLATE_KEEPER",
+    "nameEn": "Artefact Shoes Plate Keeper",
+    "nameTr": "Artefact Shoes Plate Keeper",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "ARTEFACT_SHOES_PLATE_UNDEAD",
+    "nameEn": "Artefact Shoes Plate Undead",
+    "nameTr": "Artefact Shoes Plate Undead",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "BAG",
+    "nameEn": "BAG",
+    "nameTr": "BAG",
+    "category": "Bag"
+  },
+  {
+    "baseId": "BAG_INSIGHT",
+    "nameEn": "BAG Insight",
+    "nameTr": "BAG Insight",
+    "category": "Bag"
+  },
+  {
+    "baseId": "CABBAGE",
+    "nameEn": "Cabbage",
+    "nameTr": "Cabbage",
+    "category": "Bag"
+  },
+  {
+    "baseId": "CAPE",
+    "nameEn": "Cape",
+    "nameTr": "Cape",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPEITEM_DEMON",
+    "nameEn": "Capeitem Demon",
+    "nameTr": "Capeitem Demon",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPEITEM_DEMON_BP",
+    "nameEn": "Capeitem Demon BP",
+    "nameTr": "Capeitem Demon BP",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPEITEM_FW_BRIDGEWATCH",
+    "nameEn": "Capeitem FW Bridgewatch",
+    "nameTr": "Capeitem FW Bridgewatch",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPEITEM_FW_BRIDGEWATCH_BP",
+    "nameEn": "Capeitem FW Bridgewatch BP",
+    "nameTr": "Capeitem FW Bridgewatch BP",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPEITEM_FW_CAERLEON",
+    "nameEn": "Capeitem FW Caerleon",
+    "nameTr": "Capeitem FW Caerleon",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPEITEM_FW_CAERLEON_BP",
+    "nameEn": "Capeitem FW Caerleon BP",
+    "nameTr": "Capeitem FW Caerleon BP",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPEITEM_FW_FORTSTERLING",
+    "nameEn": "Capeitem FW Fortsterling",
+    "nameTr": "Capeitem FW Fortsterling",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPEITEM_FW_FORTSTERLING_BP",
+    "nameEn": "Capeitem FW Fortsterling BP",
+    "nameTr": "Capeitem FW Fortsterling BP",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPEITEM_FW_LYMHURST",
+    "nameEn": "Capeitem FW Lymhurst",
+    "nameTr": "Capeitem FW Lymhurst",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPEITEM_FW_LYMHURST_BP",
+    "nameEn": "Capeitem FW Lymhurst BP",
+    "nameTr": "Capeitem FW Lymhurst BP",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPEITEM_FW_MARTLOCK",
+    "nameEn": "Capeitem FW Martlock",
+    "nameTr": "Capeitem FW Martlock",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPEITEM_FW_MARTLOCK_BP",
+    "nameEn": "Capeitem FW Martlock BP",
+    "nameTr": "Capeitem FW Martlock BP",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPEITEM_FW_THETFORD",
+    "nameEn": "Capeitem FW Thetford",
+    "nameTr": "Capeitem FW Thetford",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPEITEM_FW_THETFORD_BP",
+    "nameEn": "Capeitem FW Thetford BP",
+    "nameTr": "Capeitem FW Thetford BP",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPEITEM_HERETIC",
+    "nameEn": "Capeitem Heretic",
+    "nameTr": "Capeitem Heretic",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPEITEM_HERETIC_BP",
+    "nameEn": "Capeitem Heretic BP",
+    "nameTr": "Capeitem Heretic BP",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPEITEM_KEEPER",
+    "nameEn": "Capeitem Keeper",
+    "nameTr": "Capeitem Keeper",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPEITEM_KEEPER_BP",
+    "nameEn": "Capeitem Keeper BP",
+    "nameTr": "Capeitem Keeper BP",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPEITEM_MORGANA",
+    "nameEn": "Capeitem Morgana",
+    "nameTr": "Capeitem Morgana",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPEITEM_MORGANA_BP",
+    "nameEn": "Capeitem Morgana BP",
+    "nameTr": "Capeitem Morgana BP",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPEITEM_UNDEAD",
+    "nameEn": "Capeitem Undead",
+    "nameTr": "Capeitem Undead",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPEITEM_UNDEAD_BP",
+    "nameEn": "Capeitem Undead BP",
+    "nameTr": "Capeitem Undead BP",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPE_ARENA_BANNER",
+    "nameEn": "Cape Arena Banner",
+    "nameTr": "Cape Arena Banner",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPE_CLOTH_KEEPER",
+    "nameEn": "Cape Cloth Keeper",
+    "nameTr": "Cape Cloth Keeper",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPE_CLOTH_MORGANA",
+    "nameEn": "Cape Cloth Morgana",
+    "nameTr": "Cape Cloth Morgana",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPE_CLOTH_UNDEAD",
+    "nameEn": "Cape Cloth Undead",
+    "nameTr": "Cape Cloth Undead",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPE_LEATHER_KEEPER",
+    "nameEn": "Cape Leather Keeper",
+    "nameTr": "Cape Leather Keeper",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPE_LEATHER_MORGANA",
+    "nameEn": "Cape Leather Morgana",
+    "nameTr": "Cape Leather Morgana",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPE_LEATHER_UNDEAD",
+    "nameEn": "Cape Leather Undead",
+    "nameTr": "Cape Leather Undead",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPE_PLATE_KEEPER",
+    "nameEn": "Cape Plate Keeper",
+    "nameTr": "Cape Plate Keeper",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPE_PLATE_MORGANA",
+    "nameEn": "Cape Plate Morgana",
+    "nameTr": "Cape Plate Morgana",
+    "category": "Cape"
+  },
+  {
+    "baseId": "CAPE_PLATE_UNDEAD",
+    "nameEn": "Cape Plate Undead",
+    "nameTr": "Cape Plate Undead",
+    "category": "Cape"
+  },
+  {
+    "baseId": "FARM_CABBAGE_SEED",
+    "nameEn": "Farm Cabbage Seed",
+    "nameTr": "Farm Cabbage Seed",
+    "category": "Bag"
+  },
+  {
+    "baseId": "HEAD_CLOTH_AVALON",
+    "nameEn": "Head Cloth Avalon",
+    "nameTr": "Head Cloth Avalon",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_CLOTH_HELL",
+    "nameEn": "Head Cloth Hell",
+    "nameTr": "Head Cloth Hell",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_CLOTH_KEEPER",
+    "nameEn": "Head Cloth Keeper",
+    "nameTr": "Head Cloth Keeper",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_CLOTH_MORGANA",
+    "nameEn": "Head Cloth Morgana",
+    "nameTr": "Head Cloth Morgana",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_CLOTH_ROYAL",
+    "nameEn": "Head Cloth Royal",
+    "nameTr": "Head Cloth Royal",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_CLOTH_SET1",
+    "nameEn": "Head Cloth Set1",
+    "nameTr": "Head Cloth Set1",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_CLOTH_SET2",
+    "nameEn": "Head Cloth Set2",
+    "nameTr": "Head Cloth Set2",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_CLOTH_SET3",
+    "nameEn": "Head Cloth Set3",
+    "nameTr": "Head Cloth Set3",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_GATHERER_FIBER",
+    "nameEn": "Head Gatherer Fiber",
+    "nameTr": "Head Gatherer Fiber",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_GATHERER_FISH",
+    "nameEn": "Head Gatherer Fish",
+    "nameTr": "Head Gatherer Fish",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_GATHERER_HIDE",
+    "nameEn": "Head Gatherer Hide",
+    "nameTr": "Head Gatherer Hide",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_GATHERER_ORE",
+    "nameEn": "Head Gatherer ORE",
+    "nameTr": "Head Gatherer ORE",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_GATHERER_ROCK",
+    "nameEn": "Head Gatherer Rock",
+    "nameTr": "Head Gatherer Rock",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_GATHERER_WOOD",
+    "nameEn": "Head Gatherer Wood",
+    "nameTr": "Head Gatherer Wood",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_LEATHER_AVALON",
+    "nameEn": "Head Leather Avalon",
+    "nameTr": "Head Leather Avalon",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_LEATHER_HELL",
+    "nameEn": "Head Leather Hell",
+    "nameTr": "Head Leather Hell",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_LEATHER_MORGANA",
+    "nameEn": "Head Leather Morgana",
+    "nameTr": "Head Leather Morgana",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_LEATHER_ROYAL",
+    "nameEn": "Head Leather Royal",
+    "nameTr": "Head Leather Royal",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_LEATHER_SET1",
+    "nameEn": "Head Leather Set1",
+    "nameTr": "Head Leather Set1",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_LEATHER_SET2",
+    "nameEn": "Head Leather Set2",
+    "nameTr": "Head Leather Set2",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_LEATHER_SET3",
+    "nameEn": "Head Leather Set3",
+    "nameTr": "Head Leather Set3",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_LEATHER_UNDEAD",
+    "nameEn": "Head Leather Undead",
+    "nameTr": "Head Leather Undead",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_PLATE_AVALON",
+    "nameEn": "Head Plate Avalon",
+    "nameTr": "Head Plate Avalon",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_PLATE_HELL",
+    "nameEn": "Head Plate Hell",
+    "nameTr": "Head Plate Hell",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_PLATE_KEEPER",
+    "nameEn": "Head Plate Keeper",
+    "nameTr": "Head Plate Keeper",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_PLATE_ROYAL",
+    "nameEn": "Head Plate Royal",
+    "nameTr": "Head Plate Royal",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_PLATE_SET1",
+    "nameEn": "Head Plate Set1",
+    "nameTr": "Head Plate Set1",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_PLATE_SET2",
+    "nameEn": "Head Plate Set2",
+    "nameTr": "Head Plate Set2",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_PLATE_SET3",
+    "nameEn": "Head Plate Set3",
+    "nameTr": "Head Plate Set3",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_PLATE_UNDEAD",
+    "nameEn": "Head Plate Undead",
+    "nameTr": "Head Plate Undead",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_PLATE_VANITY_PERFTEST_HIGH",
+    "nameEn": "Head Plate Vanity Perftest High",
+    "nameTr": "Head Plate Vanity Perftest High",
+    "category": "Head"
+  },
+  {
+    "baseId": "HEAD_PLATE_VANITY_PERFTEST_NO_FX",
+    "nameEn": "Head Plate Vanity Perftest NO FX",
+    "nameTr": "Head Plate Vanity Perftest NO FX",
+    "category": "Head"
+  },
+  {
+    "baseId": "MAIN_1HCROSSBOW",
+    "nameEn": "Main 1hcrossbow",
+    "nameTr": "Main 1hcrossbow",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_ARCANESTAFF",
+    "nameEn": "Main Arcanestaff",
+    "nameTr": "Main Arcanestaff",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_ARCANESTAFF_UNDEAD",
+    "nameEn": "Main Arcanestaff Undead",
+    "nameTr": "Main Arcanestaff Undead",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_AXE",
+    "nameEn": "Main AXE",
+    "nameTr": "Main AXE",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_CURSEDSTAFF",
+    "nameEn": "Main Cursedstaff",
+    "nameTr": "Main Cursedstaff",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_CURSEDSTAFF_AVALON",
+    "nameEn": "Main Cursedstaff Avalon",
+    "nameTr": "Main Cursedstaff Avalon",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_CURSEDSTAFF_UNDEAD",
+    "nameEn": "Main Cursedstaff Undead",
+    "nameTr": "Main Cursedstaff Undead",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_DAGGER",
+    "nameEn": "Main Dagger",
+    "nameTr": "Main Dagger",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_FIRESTAFF",
+    "nameEn": "Main Firestaff",
+    "nameTr": "Main Firestaff",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_FIRESTAFF_KEEPER",
+    "nameEn": "Main Firestaff Keeper",
+    "nameTr": "Main Firestaff Keeper",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_FROSTSTAFF",
+    "nameEn": "Main Froststaff",
+    "nameTr": "Main Froststaff",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_FROSTSTAFF_AVALON",
+    "nameEn": "Main Froststaff Avalon",
+    "nameTr": "Main Froststaff Avalon",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_FROSTSTAFF_KEEPER",
+    "nameEn": "Main Froststaff Keeper",
+    "nameTr": "Main Froststaff Keeper",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_HAMMER",
+    "nameEn": "Main Hammer",
+    "nameTr": "Main Hammer",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_HOLYSTAFF",
+    "nameEn": "Main Holystaff",
+    "nameTr": "Main Holystaff",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_HOLYSTAFF_AVALON",
+    "nameEn": "Main Holystaff Avalon",
+    "nameTr": "Main Holystaff Avalon",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_HOLYSTAFF_MORGANA",
+    "nameEn": "Main Holystaff Morgana",
+    "nameTr": "Main Holystaff Morgana",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_MACE",
+    "nameEn": "Main Mace",
+    "nameTr": "Main Mace",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_MACE_HELL",
+    "nameEn": "Main Mace Hell",
+    "nameTr": "Main Mace Hell",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_NATURESTAFF",
+    "nameEn": "Main Naturestaff",
+    "nameTr": "Main Naturestaff",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_NATURESTAFF_AVALON",
+    "nameEn": "Main Naturestaff Avalon",
+    "nameTr": "Main Naturestaff Avalon",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_NATURESTAFF_KEEPER",
+    "nameEn": "Main Naturestaff Keeper",
+    "nameTr": "Main Naturestaff Keeper",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_RAPIER_MORGANA",
+    "nameEn": "Main Rapier Morgana",
+    "nameTr": "Main Rapier Morgana",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_ROCKMACE_KEEPER",
+    "nameEn": "Main Rockmace Keeper",
+    "nameTr": "Main Rockmace Keeper",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_SCIMITAR_MORGANA",
+    "nameEn": "Main Scimitar Morgana",
+    "nameTr": "Main Scimitar Morgana",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_SPEAR",
+    "nameEn": "Main Spear",
+    "nameTr": "Main Spear",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_SPEAR_KEEPER",
+    "nameEn": "Main Spear Keeper",
+    "nameTr": "Main Spear Keeper",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_SPEAR_LANCE_AVALON",
+    "nameEn": "Main Spear Lance Avalon",
+    "nameTr": "Main Spear Lance Avalon",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_SUMMONERSTAFF_PROTOTYPE",
+    "nameEn": "Main Summonerstaff Prototype",
+    "nameTr": "Main Summonerstaff Prototype",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MAIN_SWORD",
+    "nameEn": "Main Sword",
+    "nameTr": "Main Sword",
+    "category": "Weapon"
+  },
+  {
+    "baseId": "MOUNT_ARMORED_HORSE",
+    "nameEn": "Mount Armored Horse",
+    "nameTr": "Mount Armored Horse",
+    "category": "Chest"
+  },
+  {
+    "baseId": "MOUNT_ARMORED_HORSE_MORGANA",
+    "nameEn": "Mount Armored Horse Morgana",
+    "nameTr": "Mount Armored Horse Morgana",
+    "category": "Chest"
+  },
+  {
+    "baseId": "MOUNT_ARMORED_HORSE_SKIN_01",
+    "nameEn": "Mount Armored Horse Skin 01",
+    "nameTr": "Mount Armored Horse Skin 01",
+    "category": "Chest"
+  },
+  {
+    "baseId": "MOUNT_ARMORED_SWAMPDRAGON_BATTLE",
+    "nameEn": "Mount Armored Swampdragon Battle",
+    "nameTr": "Mount Armored Swampdragon Battle",
+    "category": "Chest"
+  },
+  {
+    "baseId": "OFF_BOOK",
+    "nameEn": "OFF Book",
+    "nameTr": "OFF Book",
+    "category": "Offhand"
+  },
+  {
+    "baseId": "OFF_CENSER_AVALON",
+    "nameEn": "OFF Censer Avalon",
+    "nameTr": "OFF Censer Avalon",
+    "category": "Offhand"
+  },
+  {
+    "baseId": "OFF_DEMONSKULL_HELL",
+    "nameEn": "OFF Demonskull Hell",
+    "nameTr": "OFF Demonskull Hell",
+    "category": "Offhand"
+  },
+  {
+    "baseId": "OFF_HORN_KEEPER",
+    "nameEn": "OFF Horn Keeper",
+    "nameTr": "OFF Horn Keeper",
+    "category": "Offhand"
+  },
+  {
+    "baseId": "OFF_JESTERCANE_HELL",
+    "nameEn": "OFF Jestercane Hell",
+    "nameTr": "OFF Jestercane Hell",
+    "category": "Offhand"
+  },
+  {
+    "baseId": "OFF_LAMP_UNDEAD",
+    "nameEn": "OFF Lamp Undead",
+    "nameTr": "OFF Lamp Undead",
+    "category": "Offhand"
+  },
+  {
+    "baseId": "OFF_ORB_MORGANA",
+    "nameEn": "OFF ORB Morgana",
+    "nameTr": "OFF ORB Morgana",
+    "category": "Offhand"
+  },
+  {
+    "baseId": "OFF_SHIELD",
+    "nameEn": "OFF Shield",
+    "nameTr": "OFF Shield",
+    "category": "Offhand"
+  },
+  {
+    "baseId": "OFF_SHIELD_AVALON",
+    "nameEn": "OFF Shield Avalon",
+    "nameTr": "OFF Shield Avalon",
+    "category": "Offhand"
+  },
+  {
+    "baseId": "OFF_SHIELD_HELL",
+    "nameEn": "OFF Shield Hell",
+    "nameTr": "OFF Shield Hell",
+    "category": "Offhand"
+  },
+  {
+    "baseId": "OFF_SPIKEDSHIELD_MORGANA",
+    "nameEn": "OFF Spikedshield Morgana",
+    "nameTr": "OFF Spikedshield Morgana",
+    "category": "Offhand"
+  },
+  {
+    "baseId": "OFF_TALISMAN_AVALON",
+    "nameEn": "OFF Talisman Avalon",
+    "nameTr": "OFF Talisman Avalon",
+    "category": "Offhand"
+  },
+  {
+    "baseId": "OFF_TORCH",
+    "nameEn": "OFF Torch",
+    "nameTr": "OFF Torch",
+    "category": "Offhand"
+  },
+  {
+    "baseId": "OFF_TOTEM_KEEPER",
+    "nameEn": "OFF Totem Keeper",
+    "nameTr": "OFF Totem Keeper",
+    "category": "Offhand"
+  },
+  {
+    "baseId": "OFF_TOWERSHIELD_UNDEAD",
+    "nameEn": "OFF Towershield Undead",
+    "nameTr": "OFF Towershield Undead",
+    "category": "Offhand"
+  },
+  {
+    "baseId": "SHOES_CLOTH_AVALON",
+    "nameEn": "Shoes Cloth Avalon",
+    "nameTr": "Shoes Cloth Avalon",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_CLOTH_HELL",
+    "nameEn": "Shoes Cloth Hell",
+    "nameTr": "Shoes Cloth Hell",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_CLOTH_KEEPER",
+    "nameEn": "Shoes Cloth Keeper",
+    "nameTr": "Shoes Cloth Keeper",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_CLOTH_MORGANA",
+    "nameEn": "Shoes Cloth Morgana",
+    "nameTr": "Shoes Cloth Morgana",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_CLOTH_ROYAL",
+    "nameEn": "Shoes Cloth Royal",
+    "nameTr": "Shoes Cloth Royal",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_CLOTH_SET1",
+    "nameEn": "Shoes Cloth Set1",
+    "nameTr": "Shoes Cloth Set1",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_CLOTH_SET2",
+    "nameEn": "Shoes Cloth Set2",
+    "nameTr": "Shoes Cloth Set2",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_CLOTH_SET3",
+    "nameEn": "Shoes Cloth Set3",
+    "nameTr": "Shoes Cloth Set3",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_GATHERER_FIBER",
+    "nameEn": "Shoes Gatherer Fiber",
+    "nameTr": "Shoes Gatherer Fiber",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_GATHERER_FISH",
+    "nameEn": "Shoes Gatherer Fish",
+    "nameTr": "Shoes Gatherer Fish",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_GATHERER_HIDE",
+    "nameEn": "Shoes Gatherer Hide",
+    "nameTr": "Shoes Gatherer Hide",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_GATHERER_ORE",
+    "nameEn": "Shoes Gatherer ORE",
+    "nameTr": "Shoes Gatherer ORE",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_GATHERER_ROCK",
+    "nameEn": "Shoes Gatherer Rock",
+    "nameTr": "Shoes Gatherer Rock",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_GATHERER_WOOD",
+    "nameEn": "Shoes Gatherer Wood",
+    "nameTr": "Shoes Gatherer Wood",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_LEATHER_AVALON",
+    "nameEn": "Shoes Leather Avalon",
+    "nameTr": "Shoes Leather Avalon",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_LEATHER_HELL",
+    "nameEn": "Shoes Leather Hell",
+    "nameTr": "Shoes Leather Hell",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_LEATHER_MORGANA",
+    "nameEn": "Shoes Leather Morgana",
+    "nameTr": "Shoes Leather Morgana",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_LEATHER_ROYAL",
+    "nameEn": "Shoes Leather Royal",
+    "nameTr": "Shoes Leather Royal",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_LEATHER_SET1",
+    "nameEn": "Shoes Leather Set1",
+    "nameTr": "Shoes Leather Set1",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_LEATHER_SET2",
+    "nameEn": "Shoes Leather Set2",
+    "nameTr": "Shoes Leather Set2",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_LEATHER_SET3",
+    "nameEn": "Shoes Leather Set3",
+    "nameTr": "Shoes Leather Set3",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_LEATHER_UNDEAD",
+    "nameEn": "Shoes Leather Undead",
+    "nameTr": "Shoes Leather Undead",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_PLATE_AVALON",
+    "nameEn": "Shoes Plate Avalon",
+    "nameTr": "Shoes Plate Avalon",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_PLATE_HELL",
+    "nameEn": "Shoes Plate Hell",
+    "nameTr": "Shoes Plate Hell",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_PLATE_KEEPER",
+    "nameEn": "Shoes Plate Keeper",
+    "nameTr": "Shoes Plate Keeper",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_PLATE_ROYAL",
+    "nameEn": "Shoes Plate Royal",
+    "nameTr": "Shoes Plate Royal",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_PLATE_SET1",
+    "nameEn": "Shoes Plate Set1",
+    "nameTr": "Shoes Plate Set1",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_PLATE_SET2",
+    "nameEn": "Shoes Plate Set2",
+    "nameTr": "Shoes Plate Set2",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_PLATE_SET3",
+    "nameEn": "Shoes Plate Set3",
+    "nameTr": "Shoes Plate Set3",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_PLATE_UNDEAD",
+    "nameEn": "Shoes Plate Undead",
+    "nameTr": "Shoes Plate Undead",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_PLATE_VANITY_PERFTEST_HIGH",
+    "nameEn": "Shoes Plate Vanity Perftest High",
+    "nameTr": "Shoes Plate Vanity Perftest High",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_PLATE_VANITY_PERFTEST_MESHONLY",
+    "nameEn": "Shoes Plate Vanity Perftest Meshonly",
+    "nameTr": "Shoes Plate Vanity Perftest Meshonly",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_PLATE_VANITY_PERFTEST_NO_FX",
+    "nameEn": "Shoes Plate Vanity Perftest NO FX",
+    "nameTr": "Shoes Plate Vanity Perftest NO FX",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SHOES_PLATE_VANITY_PERFTEST_PARTICLEONLY",
+    "nameEn": "Shoes Plate Vanity Perftest Particleonly",
+    "nameTr": "Shoes Plate Vanity Perftest Particleonly",
+    "category": "Shoes"
+  },
+  {
+    "baseId": "SILVERBAG_NONTRADABLE",
+    "nameEn": "Silverbag Nontradable",
+    "nameTr": "Silverbag Nontradable",
+    "category": "Bag"
+  }
+]

@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Albion BM Flip</title>
+  <style>
+    :root{
+      --bg:#0f1115; --panel:#171a21; --panel2:#1e232d; --text:#e8ecf1; --muted:#9aa4b2;
+      --line:#2a3140; --blue:#4da3ff; --green:#1f9d55; --sidebar-open:360px; --sidebar-closed:64px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif}
+    .app{display:grid;grid-template-columns:var(--sidebar-open) 1fr;gap:12px;padding:12px;min-height:100vh;transition:.2s}
+    .app.kapali{grid-template-columns:var(--sidebar-closed) 1fr}
+    .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px}
+    #sol{padding:10px;overflow:hidden}
+    .sol-ust{display:flex;gap:8px;align-items:flex-start}
+    .menu-btn{width:42px;height:42px;border-radius:8px;border:1px solid var(--line);background:var(--panel2);color:var(--text);cursor:pointer}
+    .sol-baslik h2{margin:0;font-size:15px}
+    .sol-baslik .muted{color:var(--muted);font-size:12px;line-height:1.25}
+    .app.kapali .sol-baslik,.app.kapali .sol-icerik{display:none}
+    h3{margin:0 0 10px;font-size:15px}
+    .satir{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+    .satir label{min-width:145px;color:var(--muted);font-size:13px}
+    .satir input,.satir select{
+      width:100%;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px;font-size:13px
+    }
+    .satir.sarma{flex-wrap:wrap}
+    .grid2,.grid3{display:grid;gap:6px;margin-bottom:8px}
+    .grid2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid2 label,.grid3 label{
+      display:flex;gap:6px;align-items:center;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:7px 8px;font-size:13px
+    }
+    .bolum{margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.08)}
+    button{background:var(--blue);border:none;color:#fff;border-radius:8px;padding:9px 12px;cursor:pointer;font-weight:600}
+    button.ikincil{background:var(--panel2);border:1px solid var(--line);color:var(--text)}
+    button.yesil{background:var(--green)}
+    button:disabled{opacity:.65;cursor:not-allowed}
+
+    .ustbar{display:grid;grid-template-columns:1fr auto auto auto;gap:8px;margin-bottom:12px;align-items:center}
+    .ustbar .panel{padding:10px}
+    .chip{display:inline-flex;gap:6px;align-items:center;border:1px solid var(--line);background:var(--panel2);border-radius:999px;padding:4px 8px;font-size:12px;color:var(--muted)}
+
+    .stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-bottom:10px}
+    .stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px}
+    .stat .label{font-size:12px;color:var(--muted)}
+    .stat .val{font-size:18px;font-weight:700;margin-top:4px}
+
+    .tableWrap{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+    .tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:10px 10px 0}
+    .tools input{flex:1;min-width:220px;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px}
+    .scroll{max-height:calc(100vh - 230px);overflow:auto}
+    table{width:100%;border-collapse:collapse;min-width:1250px;font-size:13px}
+    thead th{position:sticky;top:0;background:#121620;z-index:2;text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);cursor:pointer;white-space:nowrap}
+    tbody td{padding:8px;border-bottom:1px solid rgba(255,255,255,.04);white-space:nowrap}
+    tbody tr:hover{background:rgba(255,255,255,.02)}
+    .profit{color:#7ef2b4;font-weight:700}
+    .loss{color:#ff9ba0;font-weight:700}
+    .qbadge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:999px;border:1px solid var(--line);background:var(--panel2);font-size:12px;margin-left:6px}
+    .muted{color:var(--muted)}
+    .small{font-size:12px}
+    .yas-ok{color:#7ef2b4;font-weight:700}
+    .yas-mid{color:#ffd166;font-weight:700}
+    .yas-bad{color:#ff9ba0;font-weight:700}
+    .inline-check {
+      display:flex; align-items:center; gap:8px; width:100%;
+      background:var(--panel2); border:1px solid var(--line); border-radius:8px; padding:8px;
+    }
+    .inline-check input[type="checkbox"] { width:auto; }
+    .mini-note{font-size:11px;color:var(--muted);margin-top:4px}
+
+    .info-tip{
+      position:relative;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:18px;height:18px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:var(--panel2);
+      color:#ffd166;
+      font-size:12px;
+      font-weight:700;
+      cursor:help;
+      flex:0 0 auto;
+    }
+    .info-tip::after{
+      content: attr(data-tip);
+      position:absolute;
+      left:24px;
+      top:50%;
+      transform:translateY(-50%);
+      background:#0f141d;
+      color:var(--text);
+      border:1px solid var(--line);
+      border-radius:8px;
+      padding:8px 10px;
+      font-size:12px;
+      line-height:1.35;
+      width:260px;
+      white-space:normal;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .12s ease;
+      z-index:50;
+      box-shadow:0 6px 20px rgba(0,0,0,.35);
+    }
+    .info-tip:hover::after{ opacity:1; }
+
+    .info-row{
+      display:flex;
+      align-items:flex-start;
+      gap:8px;
+      margin-top:8px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.35;
+    }
+    .info-row strong{ color:var(--text); }
+
+    @media (max-width: 1200px){
+      .app,.app.kapali{grid-template-columns:1fr}
+      .ustbar{grid-template-columns:1fr}
+      .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .scroll{max-height:60vh}
+    }
+    @media (max-width: 768px){
+      .info-tip::after{
+        left:auto;
+        right:0;
+        top:24px;
+        transform:none;
+        width:220px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div id="app" class="app kapali">
+  <aside id="sol" class="panel">
+    <div class="sol-ust">
+      <button id="toggleSol" class="menu-btn" title="Filtreleri aç/kapat">☰</button>
+      <div class="sol-baslik">
+        <h2>Albion BM Flip Yardımcısı</h2>
+       
+      </div>
+    </div>
+
+    <div class="sol-icerik">
+      <div class="bolum">
+        <h3>Genel</h3>
+        <div class="satir">
+          <label>Sunucu</label>
+          <select id="sunucu">
+            <option value="EU" selected>EU</option>
+            <option value="NA">NA</option>
+            <option value="Asia">Asia</option>
+          </select>
+        </div>
+
+        <div class="satir">
+          <label>Dil</label>
+          <select id="dilSec">
+            <option value="tr" selected>Türkçe</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="bolum">
+        <h3>Tier</h3>
+        <div class="grid2">
+          <label><input type="checkbox" class="tierSec" value="5" checked> T5</label>
+          <label><input type="checkbox" class="tierSec" value="6" checked> T6</label>
+          <label><input type="checkbox" class="tierSec" value="7" checked> T7</label>
+          <label><input type="checkbox" class="tierSec" value="8" checked> T8</label>
+        </div>
+
+        <h3>Enchant</h3>
+        <div class="grid2">
+          <label><input type="checkbox" class="enchSec" value="0" checked> 0</label>
+          <label><input type="checkbox" class="enchSec" value="1" checked> 1</label>
+          <label><input type="checkbox" class="enchSec" value="2" checked> 2</label>
+          <label><input type="checkbox" class="enchSec" value="3" checked> 3</label>
+          <label><input type="checkbox" class="enchSec" value="4" checked> 4</label>
+        </div>
+
+        <h3>Quality</h3>
+        <div class="grid2">
+          <label><input type="checkbox" class="qualSec" value="1" checked> Normal</label>
+          <label><input type="checkbox" class="qualSec" value="2" checked> İyi</label>
+          <label><input type="checkbox" class="qualSec" value="3" checked> Seçkin</label>
+          <label><input type="checkbox" class="qualSec" value="4" checked> Mükemmel</label>
+          <label><input type="checkbox" class="qualSec" value="5" checked> Kusursuz</label>
+        </div>
+      </div>
+
+      <div class="bolum">
+        <h3>Kategori</h3>
+        <div class="grid2">
+          <label><input type="checkbox" class="anaKatSec" value="Weapons" checked> Silah</label>
+          <label><input type="checkbox" class="anaKatSec" value="Armors" checked> Armor</label>
+          <label><input type="checkbox" class="anaKatSec" value="Bags" checked> Çanta</label>
+          <label><input type="checkbox" class="anaKatSec" value="Capes" checked> Pelerin</label>
+          <label><input type="checkbox" class="anaKatSec" value="Offhands" checked> Offhand</label>
+        </div>
+        <div class="mini-note">Armorlar = Baş + Göğüs + Ayak zırhları</div>
+      </div>
+
+      <div class="bolum">
+        <h3>Kaynak Şehirler</h3>
+        <div class="grid3">
+          <label><input type="checkbox" class="sehirSec" value="Martlock" checked> Martlock</label>
+          <label><input type="checkbox" class="sehirSec" value="Bridgewatch" checked> Bridgewatch</label>
+          <label><input type="checkbox" class="sehirSec" value="Lymhurst" checked> Lymhurst</label>
+          <label><input type="checkbox" class="sehirSec" value="Thetford" checked> Thetford</label>
+          <label><input type="checkbox" class="sehirSec" value="Fort Sterling" checked> Fort Sterling</label>
+          <label><input type="checkbox" class="sehirSec" value="Caerleon" checked> Caerleon</label>
+          <label><input type="checkbox" class="sehirSec" value="Brecilien"> Brecilien</label>
+        </div>
+      </div>
+
+      <div class="bolum">
+        <h3>Kâr Filtreleri</h3>
+        <div class="satir">
+          <label>Min Net Kâr</label>
+          <input type="number" id="minNetKar" value="50000" step="1000">
+        </div>
+        <div class="satir">
+          <label>Min Kâr %</label>
+          <input type="number" id="minKarYuzde" value="10" step="1">
+        </div>
+        <div class="satir sarma">
+          <label style="min-width:auto;">
+            <input type="checkbox" id="tierBazliEsik" checked>
+            Tier'e göre daha sıkı filtre uygula
+          </label>
+        </div>
+      </div>
+
+      <div class="bolum">
+        <h3>Kesintiler</h3>
+
+        <div class="satir">
+          <label>%4 Premium Vergisi</label>
+          <div class="inline-check">
+            <input type="checkbox" id="premiumVergisiAktif" checked>
+            
+            
+          </div>
+        </div>
+
+        <div class="satir">
+          <label>%2.5 İşlem Ücreti</label>
+          <div class="inline-check">
+            <input type="checkbox" id="islemUcretiAktif" checked>
+            
+            
+          </div>
+        </div>
+      </div>
+
+      <div class="bolum">
+        <h3>Görünüm</h3>
+        <div class="satir">
+          <label>Sonuç Limiti</label>
+          <input type="number" id="sonucLimiti" value="300" step="1">
+        </div>
+      </div>
+
+      <div class="bolum">
+        <div class="info-row">
+          <span class="info-tip" data-tip="Program Black Market satırında buy_price_max > 0 olan itemleri dikkate alır. Yani BM'de aktif alım emri olan itemler taranır.">!</span>
+          <span><strong>BM’de dönen item mantığı</strong></span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-tip" data-tip="Kaynak şehir fiyatı için AODP verisindeki sell_price_min > 0 değeri kullanılır. Şehirde satış fiyatı yoksa satır tabloya düşmez.">!</span>
+          <span><strong>Şehir fiyatı kuralı</strong></span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-tip" data-tip="Kapsam: Silah + Armor + Çanta + Pelerin + Offhand. Sonuçlar katalog ve seçili filtrelere göre üretilir.">!</span>
+          <span><strong>Kapsam</strong></span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-tip" data-tip="API özetinde son çekilen ham kayıt sayısı, BM satırları, şehir satırları ve üretilen tablo satırı sayısı gösterilir.">!</span>
+          <span id="apiOzet">API özet: -</span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-tip" data-tip="Yüklü katalog dosyasının adı ve kaç base item içerdiği burada görünür. Eğer items_catalog.json bulunamazsa fallback katalog kullanılır.">!</span>
+          <span id="katalogOzet">Katalog: yüklenmedi</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main>
+    <div class="ustbar">
+      <div class="panel">
+        <div style="font-weight:700;margin-bottom:4px;">BM Flip</div>
+        <div class="small muted">Sıralama: <span id="siralamaBilgi">Net Kâr ↓</span></div>
+      </div>
+      <div class="panel"><span class="chip">Kaynak: <strong id="veriKaynakMetni" style="color:var(--text)">AODP Canlı</strong></span></div>
+      <div class="panel"><span class="chip">Son Güncelleme: <strong id="sonGuncellemeMetni" style="color:var(--text)">-</strong></span></div>
+      <div class="panel"><button id="veriGuncelleBtn" class="yesil">Verileri Güncelle</button></div>
+    </div>
+
+    <section class="stats" id="stats"></section>
+
+    <div class="tableWrap">
+      <div class="tools">
+        <input type="text" id="aramaKutusu" placeholder="İtem / kategori / şehir / quality ara...">
+        <span class="chip" id="sonucSayisiHap">0 sonuç</span>
+        <span class="chip" id="bmDoluHap">0 BM kayıt</span>
+        <span class="chip" id="kesintiModuHap">Kesinti: %4 Açık | %2.5 Açık</span>
+      </div>
+
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr>
+              <th data-sort="itemNameUi">İtem</th>
+              <th data-sort="tier">Tier</th>
+              <th data-sort="enchant">Enchant</th>
+              <th data-sort="mainCategoryUi">Kategori</th>
+              <th data-sort="sourceCity">Kaynak Şehir</th>
+              <th data-sort="cityPrice">Şehir Fiyatı</th>
+              <th data-sort="bmPrice">BM Fiyatı</th>
+              <th data-sort="cityAgeMin">Şehir Veri Yaşı</th>
+              <th data-sort="bmAgeMin">BM Veri Yaşı</th>
+              <th data-sort="grossProfit">Brüt Kâr</th>
+              <th data-sort="netProfit">Net Kâr</th>
+              <th data-sort="profitPercent">Kâr %</th>
+            </tr>
+          </thead>
+          <tbody id="tabloGovde"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+let hamVeri = [];
+let gorunenVeri = [];
+let gecerliSiralama = { key: "netProfit", dir: "desc" };
+
+let sonApiHamKayit = 0, sonApiBmSatir = 0, sonApiSehirSatir = 0, sonUretilenSatir = 0;
+let sonBmDoluSayisi = 0;
+let ITEM_CATALOG = [];
+
+const FALLBACK_CATALOG = [
+  { baseId:"MAIN_SWORD", nameEn:"Broadsword", nameTr:"Geniş Kılıç", category:"Weapon" },
+  { baseId:"OFF_TORCH", nameEn:"Torch", nameTr:"Meşale", category:"Offhand" },
+  { baseId:"HEAD_PLATE_SET1", nameEn:"Soldier Helmet", nameTr:"Asker Miğferi", category:"Head" },
+  { baseId:"ARMOR_PLATE_SET1", nameEn:"Soldier Armor", nameTr:"Asker Zırhı", category:"Chest" },
+  { baseId:"SHOES_PLATE_SET1", nameEn:"Soldier Boots", nameTr:"Asker Botu", category:"Shoes" },
+  { baseId:"BAG", nameEn:"Bag", nameTr:"Çanta", category:"Bag" },
+  { baseId:"CAPEITEM_FW_MARTLOCK", nameEn:"Martlock Cape", nameTr:"Martlock Pelerini", category:"Cape" }
+];
+
+const QUALITY_TR = {1:"Normal",2:"İyi",3:"Seçkin",4:"Mükemmel",5:"Kusursuz"};
+const QUALITY_EN = {1:"Normal",2:"Good",3:"Outstanding",4:"Excellent",5:"Masterpiece"};
+
+const MAIN_CAT_TR = {
+  Weapons: "Silahlar",
+  Armors: "Armorlar",
+  Bags: "Çantalar",
+  Capes: "Pelerinler",
+  Offhands: "Offhandlar"
+};
+const MAIN_CAT_EN = {
+  Weapons: "Weapons",
+  Armors: "Armors",
+  Bags: "Bags",
+  Capes: "Capes",
+  Offhands: "Offhands"
+};
+
+const AODP_HOSTS = {
+  EU: "https://europe.albion-online-data.com",
+  NA: "https://west.albion-online-data.com",
+  Asia: "https://east.albion-online-data.com"
+};
+const BM_KONUM = "Black Market";
+
+let aktifDil = localStorage.getItem("bmFlip_dil") || "tr";
+
+function trNum(n){ return Number(n||0).toLocaleString("tr-TR"); }
+function pct(d){ return (d*100).toFixed(1) + "%"; }
+
+function qLabel(q, dil=aktifDil){
+  return dil === "en" ? (QUALITY_EN[q] || `Q${q}`) : (QUALITY_TR[q] || `Q${q}`);
+}
+function itemUi(row){
+  return aktifDil === "en" ? (row.itemNameEn || row.itemNameTr || row.itemId) : (row.itemNameTr || row.itemNameEn || row.itemId);
+}
+function qBadge(row){ return `<span class="qbadge">Q${row.quality} ${qLabel(row.quality)}</span>`; }
+function mainCatUi(code){
+  return aktifDil === "en" ? (MAIN_CAT_EN[code] || code) : (MAIN_CAT_TR[code] || code);
+}
+
+function seciliDegerler(selector, sayi=false){
+  return [...document.querySelectorAll(selector)].filter(x=>x.checked).map(x=>sayi ? Number(x.value) : x.value);
+}
+function chunk(arr, size){
+  const out=[]; for(let i=0;i<arr.length;i+=size) out.push(arr.slice(i,i+size)); return out;
+}
+
+function tierMinNetKar(t){ return t===5?30000 : t===6?60000 : t===7?120000 : t===8?250000 : 0; }
+function tierMinPct(t){ return t===5?0.10 : t===6?0.12 : t===7?0.15 : t===8?0.18 : 0; }
+
+function parseAodpDate(ts){
+  if(!ts || typeof ts !== "string") return null;
+  if(/[zZ]$|[+\-]\d{2}:\d{2}$/.test(ts)){
+    const d = new Date(ts);
+    return Number.isNaN(d.getTime()) ? null : d;
+  }
+  const d = new Date(ts + "Z");
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+function dkFark(ts){
+  const d = parseAodpDate(ts);
+  if(!d) return 9999;
+  return Math.max(0, Math.floor((Date.now()-d.getTime())/60000));
+}
+function enTazeTarihDakika(row){
+  const fields = [
+    row?.buy_price_max_date,
+    row?.buy_price_min_date,
+    row?.sell_price_min_date,
+    row?.sell_price_max_date
+  ].filter(Boolean);
+
+  if(!fields.length) return 9999;
+
+  let newest = null;
+  for(const ts of fields){
+    const d = parseAodpDate(ts);
+    if(!d) continue;
+    if(!newest || d > newest) newest = d;
+  }
+  if(!newest) return 9999;
+  return Math.max(0, Math.floor((Date.now()-newest.getTime())/60000));
+}
+function sureText(dk){
+  if(!Number.isFinite(dk) || dk>=9999) return "-";
+  if(dk < 60) return `${dk} dk`;
+  const s = Math.floor(dk/60), d = dk%60;
+  return d ? `${s} sa ${d} dk` : `${s} sa`;
+}
+function yasClass(dk){
+  if(!Number.isFinite(dk) || dk >= 180) return "yas-bad";
+  if(dk >= 30) return "yas-mid";
+  return "yas-ok";
+}
+
+function buildItemId(entry, tier, enchant){
+  return enchant > 0 ? `T${tier}_${entry.baseId}@${enchant}` : `T${tier}_${entry.baseId}`;
+}
+function detectTierFromItemId(itemId){
+  const m = /^T(\d+)_/.exec(itemId || "");
+  return m ? Number(m[1]) : null;
+}
+function detectEnchantFromItemId(itemId){
+  const m = /@(\d+)$/.exec(itemId || "");
+  return m ? Number(m[1]) : 0;
+}
+
+function toMainCategory(cat){
+  const c = (cat || "").toLowerCase();
+
+  if (c === "weapon") return "Weapons";
+  if (["armor","head","chest","shoes"].includes(c)) return "Armors";
+  if (c === "bag") return "Bags";
+  if (c === "cape") return "Capes";
+  if (c === "offhand") return "Offhands";
+
+  if (c.includes("weapon")) return "Weapons";
+  if (c.includes("head") || c.includes("chest") || c.includes("shoe") || c.includes("armor")) return "Armors";
+  if (c.includes("bag")) return "Bags";
+  if (c.includes("cape")) return "Capes";
+  if (c.includes("offhand") || c.includes("off-hand")) return "Offhands";
+
+  return "Other";
+}
+
+async function katalogYukle(){
+  try{
+    const res = await fetch("./items_catalog.json?_ts=" + Date.now(), { cache:"no-store" });
+    if(res.ok){
+      const json = await res.json();
+      if(Array.isArray(json) && json.length){
+        ITEM_CATALOG = normalizeCatalog(json);
+        document.getElementById("katalogOzet").textContent =
+          `Katalog: items_catalog.json yüklendi (${trNum(ITEM_CATALOG.length)} base item)`;
+        return;
+      }
+    }
+  }catch(e){}
+
+  ITEM_CATALOG = normalizeCatalog(FALLBACK_CATALOG);
+  document.getElementById("katalogOzet").textContent =
+    `Katalog: fallback örnek katalog (${trNum(ITEM_CATALOG.length)} kayıt)`;
+}
+
+function normalizeCatalog(raw){
+  return raw
+    .filter(x => x && (x.baseId || x.item_id))
+    .map(x => {
+      const baseId = x.baseId || x.item_id;
+      const category = x.category || x.cat || "Other";
+      return {
+        baseId,
+        nameEn: x.nameEn || x.name_en || x.name || baseId,
+        nameTr: x.nameTr || x.name_tr || x.tr || x.nameEn || x.name || baseId,
+        category,
+        mainCategory: toMainCategory(category)
+      };
+    });
+}
+
+function cfgOku(){
+  return {
+    tierler: seciliDegerler(".tierSec", true),
+    enchantlar: seciliDegerler(".enchSec", true),
+    qualities: seciliDegerler(".qualSec", true),
+    anaKategoriler: seciliDegerler(".anaKatSec", false),
+    sehirler: seciliDegerler(".sehirSec", false),
+
+    minNetKar: Number(document.getElementById("minNetKar").value || 0),
+    minKarYuzde: Number(document.getElementById("minKarYuzde").value || 0),
+    tierBazliEsik: document.getElementById("tierBazliEsik").checked,
+
+    premiumVergisiAktif: document.getElementById("premiumVergisiAktif").checked,
+    islemUcretiAktif: document.getElementById("islemUcretiAktif").checked,
+
+    sonucLimiti: Number(document.getElementById("sonucLimiti").value || 300),
+    arama: (document.getElementById("aramaKutusu").value || "").trim().toLowerCase()
+  };
+}
+
+function aktifEsik(row, cfg){
+  const gNet = cfg.minNetKar;
+  const gPct = cfg.minKarYuzde / 100;
+  if(!cfg.tierBazliEsik) return { minNet:gNet, minPct:gPct };
+  return {
+    minNet: Math.max(gNet, tierMinNetKar(row.tier)),
+    minPct: Math.max(gPct, tierMinPct(row.tier))
+  };
+}
+
+function filtrelereGoreAdaylarOlustur(){
+  const cfg = cfgOku();
+  const adaylar = [];
+
+  for(const item of ITEM_CATALOG){
+    if(item.mainCategory === "Other") continue;
+    if(cfg.anaKategoriler.length && !cfg.anaKategoriler.includes(item.mainCategory)) continue;
+
+    for(const t of cfg.tierler){
+      for(const e of cfg.enchantlar){
+        for(const q of cfg.qualities){
+          adaylar.push({
+            ...item,
+            tier: t,
+            enchant: e,
+            quality: q,
+            itemId: buildItemId(item, t, e),
+            itemNameEn: item.nameEn,
+            itemNameTr: item.nameTr
+          });
+        }
+      }
+    }
+  }
+  return adaylar;
+}
+
+async function aodpFiyatlariniGetir(){
+  const cfg = cfgOku();
+
+  if(!cfg.sehirler.length) throw new Error("En az 1 kaynak şehir seç.");
+  if(!cfg.tierler.length) throw new Error("En az 1 tier seç.");
+  if(!cfg.enchantlar.length) throw new Error("En az 1 enchant seç.");
+  if(!cfg.qualities.length) throw new Error("En az 1 quality seç.");
+  if(!cfg.anaKategoriler.length) throw new Error("En az 1 kategori seç.");
+
+  const host = AODP_HOSTS[document.getElementById("sunucu").value];
+  const adaylar = filtrelereGoreAdaylarOlustur();
+  if(!adaylar.length) throw new Error("Seçili filtreye göre katalogda item bulunamadı.");
+
+  const uniqItemIds = [...new Set(adaylar.map(x => x.itemId))];
+  const itemChunks = chunk(uniqItemIds, 35);
+  const locations = [...cfg.sehirler, BM_KONUM];
+  const qualitiesParam = cfg.qualities.join(",");
+
+  const tumApi = [];
+  for(const c of itemChunks){
+    const itemParam = c.join(",");
+    const locParam = locations.join(",");
+    const url = `${host}/api/v2/stats/prices/${encodeURIComponent(itemParam)}.json?locations=${encodeURIComponent(locParam)}&qualities=${encodeURIComponent(qualitiesParam)}&_ts=${Date.now()}_${Math.random().toString(36).slice(2,7)}`;
+
+    const res = await fetch(url, {
+      cache: "no-store",
+      headers: {
+        "Cache-Control": "no-cache, no-store, max-age=0",
+        "Pragma": "no-cache"
+      }
+    });
+    if(!res.ok) throw new Error(`AODP HTTP ${res.status}`);
+    const json = await res.json();
+    if(Array.isArray(json)) tumApi.push(...json);
+  }
+
+  sonApiHamKayit = tumApi.length;
+  sonApiBmSatir = tumApi.filter(x => x.city === BM_KONUM).length;
+  sonApiSehirSatir = tumApi.filter(x => x.city !== BM_KONUM).length;
+
+  const byKey = new Map();
+  for(const r of tumApi){
+    const q = Number(r.quality || 1);
+    byKey.set(`${r.item_id}|${r.city}|${q}`, r);
+  }
+
+  const bmDoluMap = new Map();
+  for(const r of tumApi){
+    if(r.city !== BM_KONUM) continue;
+    const bmBuy = Number(r.buy_price_max || 0);
+    if(bmBuy <= 0) continue;
+    const q = Number(r.quality || 1);
+    bmDoluMap.set(`${r.item_id}|${q}`, r);
+  }
+  sonBmDoluSayisi = bmDoluMap.size;
+
+  const adayIndex = new Map();
+  for(const a of adaylar){
+    adayIndex.set(`${a.itemId}|${a.quality}`, a);
+  }
+
+  const satirlar = [];
+  for(const [k, bm] of bmDoluMap.entries()){
+    let meta = adayIndex.get(k);
+
+    if(!meta){
+      const [itemId, qStr] = k.split("|");
+      const q = Number(qStr);
+      meta = {
+        itemId,
+        itemNameEn: itemId,
+        itemNameTr: itemId,
+        quality: q,
+        tier: detectTierFromItemId(itemId) ?? 0,
+        enchant: detectEnchantFromItemId(itemId),
+        category: "Other",
+        mainCategory: "Other"
+      };
+    }
+
+    if(meta.mainCategory === "Other") continue;
+    if(cfg.anaKategoriler.length && !cfg.anaKategoriler.includes(meta.mainCategory)) continue;
+
+    for(const city of cfg.sehirler){
+      const cityRow = byKey.get(`${meta.itemId}|${city}|${meta.quality}`);
+      if(!cityRow) continue;
+      const cityPrice = Number(cityRow.sell_price_min || 0);
+      if(cityPrice <= 0) continue;
+
+      satirlar.push({
+        itemId: meta.itemId,
+        itemNameEn: meta.itemNameEn,
+        itemNameTr: meta.itemNameTr,
+        tier: meta.tier ?? detectTierFromItemId(meta.itemId) ?? 0,
+        enchant: meta.enchant ?? detectEnchantFromItemId(meta.itemId),
+        quality: meta.quality,
+        category: meta.category || "Other",
+        mainCategory: meta.mainCategory || "Other",
+        sourceCity: city,
+
+        cityPrice,
+        bmPrice: Number(bm.buy_price_max || 0),
+
+        cityAgeMin: dkFark(cityRow.sell_price_min_date),
+        bmAgeMin: enTazeTarihDakika(bm)
+      });
+    }
+  }
+
+  sonUretilenSatir = satirlar.length;
+  return satirlar;
+}
+
+function satirlariHesapla(rows, cfg){
+  const premiumTaxRate = cfg.premiumVergisiAktif ? 0.04 : 0;
+  const islemFeeRate = cfg.islemUcretiAktif ? 0.025 : 0;
+
+  return rows.map(r=>{
+    const grossProfit = r.bmPrice - r.cityPrice;
+    const premiumTax = r.bmPrice * premiumTaxRate;
+    const islemUcreti = r.bmPrice * islemFeeRate;
+    const netProfit = grossProfit - premiumTax - islemUcreti;
+    const profitPercent = r.cityPrice > 0 ? netProfit / r.cityPrice : 0;
+
+    return {
+      ...r,
+      grossProfit,
+      premiumTax,
+      islemUcreti,
+      netProfit,
+      profitPercent,
+      itemNameUi: itemUi(r),
+      mainCategoryUi: mainCatUi(r.mainCategory)
+    };
+  });
+}
+
+function satirlariFiltrele(rows, cfg){
+  let out = rows.filter(r=>{
+    const esik = aktifEsik(r, cfg);
+    if(r.netProfit < esik.minNet) return false;
+    if(r.profitPercent < esik.minPct) return false;
+
+    if(cfg.tierler.length && !cfg.tierler.includes(r.tier)) return false;
+    if(cfg.enchantlar.length && !cfg.enchantlar.includes(r.enchant)) return false;
+    if(cfg.qualities.length && !cfg.qualities.includes(r.quality)) return false;
+    if(cfg.anaKategoriler.length && !cfg.anaKategoriler.includes(r.mainCategory)) return false;
+    if(cfg.sehirler.length && !cfg.sehirler.includes(r.sourceCity)) return false;
+
+    if(cfg.arama){
+      const hay = `${r.itemNameTr || ""} ${r.itemNameEn || ""} ${r.itemId || ""} ${mainCatUi(r.mainCategory)} ${r.sourceCity} q${r.quality} ${qLabel(r.quality,"tr")} ${qLabel(r.quality,"en")}`.toLowerCase();
+      if(!hay.includes(cfg.arama)) return false;
+    }
+    return true;
+  });
+
+  out.sort((a,b)=>{
+    let av = a[gecerliSiralama.key], bv = b[gecerliSiralama.key];
+    if(typeof av === "string" && typeof bv === "string"){
+      const cmp = av.localeCompare(bv, "tr");
+      return gecerliSiralama.dir === "asc" ? cmp : -cmp;
+    }
+    av = Number(av); bv = Number(bv);
+    if(Number.isNaN(av)) av = 0;
+    if(Number.isNaN(bv)) bv = 0;
+    return gecerliSiralama.dir === "asc" ? av - bv : bv - av;
+  });
+
+  return out.slice(0, Math.max(1, cfg.sonucLimiti));
+}
+
+function tabloyuCiz(rows){
+  const tb = document.getElementById("tabloGovde");
+  tb.innerHTML = "";
+
+  if(!rows.length){
+    tb.innerHTML = `<tr><td colspan="12" style="padding:16px;color:#9aa4b2;">Sonuç bulunamadı. (Filtre çok sıkı olabilir veya BM buy yok)</td></tr>`;
+    return;
+  }
+
+  for(const r of rows){
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${itemUi(r)}${qBadge(r)}</td>
+      <td>${r.tier ? "T"+r.tier : "-"}</td>
+      <td>.${Number(r.enchant || 0)}</td>
+      <td>${mainCatUi(r.mainCategory)}</td>
+      <td>${r.sourceCity}</td>
+      <td>${trNum(Math.round(r.cityPrice))}</td>
+      <td>${trNum(Math.round(r.bmPrice))}</td>
+      <td class="${yasClass(r.cityAgeMin)}">${sureText(r.cityAgeMin)}</td>
+      <td class="${yasClass(r.bmAgeMin)}">${sureText(r.bmAgeMin)}</td>
+      <td>${trNum(Math.round(r.grossProfit))}</td>
+      <td class="${r.netProfit >= 0 ? 'profit' : 'loss'}">${trNum(Math.round(r.netProfit))}</td>
+      <td class="${r.profitPercent >= 0 ? 'profit' : 'loss'}">${pct(r.profitPercent)}</td>
+    `;
+    tb.appendChild(tr);
+  }
+}
+
+function statsCiz(tumRows, gorunenRows){
+  const toplam = tumRows.length;
+  const enIyi = gorunenRows.length ? Math.max(...gorunenRows.map(x=>x.netProfit)) : 0;
+  const ortNet = gorunenRows.length ? gorunenRows.reduce((a,b)=>a+b.netProfit,0)/gorunenRows.length : 0;
+  const ortYuz = gorunenRows.length ? gorunenRows.reduce((a,b)=>a+b.profitPercent,0)/gorunenRows.length : 0;
+  const uniqItem = new Set(gorunenRows.map(x => `${x.itemId}|${x.quality}`)).size;
+
+  document.getElementById("stats").innerHTML = `
+    <div class="stat"><div class="label">Toplam Satır</div><div class="val">${trNum(toplam)}</div></div>
+    <div class="stat"><div class="label">Görünen Satır</div><div class="val">${trNum(gorunenRows.length)}</div></div>
+    <div class="stat"><div class="label">Benzersiz İtem (Q dahil)</div><div class="val">${trNum(uniqItem)}</div></div>
+    <div class="stat"><div class="label">En İyi Net Kâr</div><div class="val">${trNum(Math.round(enIyi))}</div></div>
+    <div class="stat"><div class="label">Ort. Net / Kâr %</div><div class="val">${trNum(Math.round(ortNet))} / ${(ortYuz*100).toFixed(1)}%</div></div>
+  `;
+
+  document.getElementById("sonucSayisiHap").textContent = `${gorunenRows.length} sonuç`;
+  document.getElementById("bmDoluHap").textContent = `${sonBmDoluSayisi} BM kayıt`;
+
+  document.getElementById("apiOzet").textContent =
+    `API özet: Ham ${trNum(sonApiHamKayit)} • BM ${trNum(sonApiBmSatir)} • Şehir ${trNum(sonApiSehirSatir)} • Üretilen ${trNum(sonUretilenSatir)}`;
+}
+
+function kesintiChipGuncelle(){
+  const p = document.getElementById("premiumVergisiAktif").checked ? "Açık" : "Kapalı";
+  const i = document.getElementById("islemUcretiAktif").checked ? "Açık" : "Kapalı";
+  document.getElementById("kesintiModuHap").textContent = `Kesinti: %4 ${p} | %2.5 ${i}`;
+}
+
+function tumunuYenidenCiz(){
+  const cfg = cfgOku();
+  const hesapli = satirlariHesapla(hamVeri, cfg);
+  gorunenVeri = satirlariFiltrele(hesapli, cfg);
+  tabloyuCiz(gorunenVeri);
+  statsCiz(hesapli, gorunenVeri);
+  kesintiChipGuncelle();
+
+  const map = {
+    itemNameUi:"İtem", tier:"Tier", enchant:"Enchant", mainCategoryUi:"Kategori", sourceCity:"Kaynak Şehir",
+    cityPrice:"Şehir Fiyatı", bmPrice:"BM Fiyatı", cityAgeMin:"Şehir Veri Yaşı", bmAgeMin:"BM Veri Yaşı",
+    grossProfit:"Brüt Kâr", netProfit:"Net Kâr", profitPercent:"Kâr %"
+  };
+  document.getElementById("siralamaBilgi").textContent =
+    `${map[gecerliSiralama.key] || gecerliSiralama.key} ${gecerliSiralama.dir === "desc" ? "↓" : "↑"}`;
+}
+
+async function canliGuncelle(){
+  const btn = document.getElementById("veriGuncelleBtn");
+  const eski = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = "Veri çekiliyor...";
+
+  try{
+    hamVeri = await aodpFiyatlariniGetir();
+    document.getElementById("sonGuncellemeMetni").textContent = new Date().toLocaleTimeString("tr-TR");
+    tumunuYenidenCiz();
+
+    if(!hamVeri.length){
+      alert("Canlı veri geldi ama eşleşen kayıt yok. Filtreleri genişletmeyi dene.");
+    }
+  }catch(err){
+    console.error(err);
+    alert("Canlı veri çekme hatası: " + err.message);
+  }finally{
+    btn.disabled = false;
+    btn.textContent = eski;
+  }
+}
+
+function solAcikMi(){ return !document.getElementById("app").classList.contains("kapali"); }
+function solAyar(acik){
+  const app = document.getElementById("app");
+  if(acik) app.classList.remove("kapali"); else app.classList.add("kapali");
+  localStorage.setItem("bmFlip_solAcik", acik ? "1" : "0");
+}
+function solDurumYukle(){
+  // Her açılışta kapalı başlat (localStorage ne olursa olsun)
+  solAyar(false);
+}
+function dilAyarla(d){
+  aktifDil = (d === "en") ? "en" : "tr";
+  localStorage.setItem("bmFlip_dil", aktifDil);
+  document.getElementById("dilSec").value = aktifDil;
+  tumunuYenidenCiz();
+}
+
+function bindEvents(){
+  document.getElementById("toggleSol").addEventListener("click", ()=>solAyar(!solAcikMi()));
+  document.getElementById("veriGuncelleBtn").addEventListener("click", canliGuncelle);
+
+  document.getElementById("aramaKutusu").addEventListener("input", tumunuYenidenCiz);
+  document.getElementById("dilSec").addEventListener("change", e=>dilAyarla(e.target.value));
+
+  [
+    "minNetKar","minKarYuzde","tierBazliEsik","sonucLimiti",
+    "premiumVergisiAktif","islemUcretiAktif"
+  ].forEach(id => document.getElementById(id).addEventListener("change", tumunuYenidenCiz));
+
+  [".tierSec",".enchSec",".qualSec",".sehirSec",".anaKatSec"].forEach(sel => {
+    document.querySelectorAll(sel).forEach(el => el.addEventListener("change", tumunuYenidenCiz));
+  });
+
+  document.getElementById("sunucu").addEventListener("change", ()=>{
+    hamVeri = [];
+    sonApiHamKayit = sonApiBmSatir = sonApiSehirSatir = sonUretilenSatir = sonBmDoluSayisi = 0;
+    document.getElementById("sonGuncellemeMetni").textContent = "-";
+    tumunuYenidenCiz();
+  });
+
+  document.querySelectorAll("th[data-sort]").forEach(th=>{
+    th.addEventListener("click", ()=>{
+      const key = th.dataset.sort;
+      if(gecerliSiralama.key === key){
+        gecerliSiralama.dir = gecerliSiralama.dir === "desc" ? "asc" : "desc";
+      }else{
+        gecerliSiralama.key = key;
+        gecerliSiralama.dir = "desc";
+      }
+      tumunuYenidenCiz();
+    });
+  });
+}
+
+async function init(){
+  bindEvents();
+  solDurumYukle();
+  await katalogYukle();
+  dilAyarla(aktifDil);
+  tumunuYenidenCiz();
+  canliGuncelle();
+}
+init();
+</script>
+</body>
+</html>
