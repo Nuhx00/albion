@@ -27,12 +27,31 @@
       width:100%;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px;font-size:13px
     }
     .satir.sarma{flex-wrap:wrap}
-    .grid2,.grid3{display:grid;gap:6px;margin-bottom:8px}
+
+    .grid2,.grid3{display:grid;gap:8px;margin-bottom:8px}
     .grid2{grid-template-columns:repeat(2,minmax(0,1fr))}
     .grid3{grid-template-columns:repeat(3,minmax(0,1fr))}
+
+    /* Filtre kutuları daha nizami */
     .grid2 label,.grid3 label{
-      display:flex;gap:6px;align-items:center;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:7px 8px;font-size:13px
+      display:flex;
+      gap:8px;
+      align-items:center;
+      min-height:42px;
+      background:var(--panel2);
+      border:1px solid var(--line);
+      border-radius:10px;
+      padding:8px 10px;
+      font-size:13px;
+      line-height:1.2;
     }
+    .grid2 label input[type="checkbox"],
+    .grid3 label input[type="checkbox"]{
+      width:auto;
+      margin:0;
+      flex:0 0 auto;
+    }
+
     .bolum{margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.08)}
     button{background:var(--blue);border:none;color:#fff;border-radius:8px;padding:9px 12px;cursor:pointer;font-weight:600}
     button.ikincil{background:var(--panel2);border:1px solid var(--line);color:var(--text)}
@@ -67,6 +86,7 @@
     .inline-check {
       display:flex; align-items:center; gap:8px; width:100%;
       background:var(--panel2); border:1px solid var(--line); border-radius:8px; padding:8px;
+      min-height:42px;
     }
     .inline-check input[type="checkbox"] { width:auto; }
     .mini-note{font-size:11px;color:var(--muted);margin-top:4px}
@@ -126,14 +146,143 @@
       .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
       .scroll{max-height:60vh}
     }
+
+    /* ===== Mobil optimizasyon ===== */
     @media (max-width: 768px){
+      body{font-size:14px}
+      .app{padding:8px;gap:8px}
+      .panel{border-radius:10px;padding:10px}
+      #sol{overflow:visible}
+
+      .sol-ust{align-items:center;gap:10px}
+      .menu-btn{width:44px;height:44px;font-size:18px}
+      h3{font-size:14px;margin-bottom:8px}
+
+      .satir{
+        flex-direction:column;
+        align-items:stretch;
+        gap:6px;
+        margin-bottom:10px;
+      }
+      .satir label{
+        min-width:0;
+        font-size:12px;
+      }
+      .satir input,.satir select{
+        min-height:42px;
+        font-size:14px;
+        padding:10px;
+      }
+
+      /* Filtre kutuları mobilde daha düzenli */
+      .grid2{
+        grid-template-columns:1fr 1fr;
+        gap:8px;
+      }
+      .grid3{
+        grid-template-columns:1fr 1fr;
+        gap:8px;
+      }
+      .grid2 label,.grid3 label{
+        min-height:44px;
+        padding:10px;
+        border-radius:10px;
+        font-size:13px;
+        gap:8px;
+      }
+
+      .inline-check{min-height:42px}
+      .mini-note{font-size:11px}
+
+      .ustbar{
+        grid-template-columns:1fr;
+        gap:8px;
+      }
+      .ustbar .panel{padding:8px 10px}
+
+      .chip{
+        font-size:11px;
+        padding:4px 8px;
+        flex-wrap:wrap;
+      }
+
+      .stats{
+        grid-template-columns:1fr 1fr;
+        gap:6px;
+      }
+      .stat{padding:8px}
+      .stat .label{font-size:11px}
+      .stat .val{font-size:15px}
+
+      .tools{
+        flex-direction:column;
+        align-items:stretch;
+        padding:8px 8px 0;
+        gap:6px;
+      }
+      .tools input{
+        min-width:0;
+        width:100%;
+        min-height:40px;
+        font-size:14px;
+      }
+      .tools .chip{
+        width:100%;
+        justify-content:center;
+      }
+
+      .scroll{
+        max-height:62vh;
+        overflow:auto;
+        -webkit-overflow-scrolling:touch;
+      }
+
+      /* Mobilde tabloyu rahatlat */
+      table{
+        min-width:760px;
+        font-size:12px;
+      }
+      thead th, tbody td{
+        padding:7px 6px;
+      }
+
+      /* Daha az önemli kolonları gizle: 8-9-10 */
+      thead th:nth-child(8),
+      thead th:nth-child(9),
+      thead th:nth-child(10),
+      tbody td:nth-child(8),
+      tbody td:nth-child(9),
+      tbody td:nth-child(10){
+        display:none;
+      }
+
+      .qbadge{
+        margin-left:4px;
+        font-size:11px;
+        padding:2px 6px;
+      }
+
+      button{
+        min-height:42px;
+        font-size:14px;
+        padding:10px 12px;
+      }
+
       .info-tip::after{
-        left:auto;
+        width:200px;
         right:0;
+        left:auto;
         top:24px;
         transform:none;
-        width:220px;
       }
+    }
+
+    @media (max-width: 480px){
+      .grid2{grid-template-columns:1fr}
+      .grid3{grid-template-columns:1fr}
+      .stats{grid-template-columns:1fr}
+      table{min-width:680px}
+      .small{font-size:11px}
     }
   </style>
 </head>
@@ -199,10 +348,10 @@
       <div class="bolum">
         <h3>Kategori</h3>
         <div class="grid2">
-          <!-- Başlangıçta sadece Silahlar seçili -->
-          <label><input type="checkbox" class="anaKatSec" value="Weapons" checked> Silah</label>
+          <!-- Başlangıçta sadece Çantalar seçili -->
+          <label><input type="checkbox" class="anaKatSec" value="Weapons"> Silah</label>
           <label><input type="checkbox" class="anaKatSec" value="Armors"> Armor</label>
-          <label><input type="checkbox" class="anaKatSec" value="Bags"> Çanta</label>
+          <label><input type="checkbox" class="anaKatSec" value="Bags" checked> Çanta</label>
           <label><input type="checkbox" class="anaKatSec" value="Capes"> Pelerin</label>
           <label><input type="checkbox" class="anaKatSec" value="Offhands"> Offhand</label>
         </div>
@@ -853,8 +1002,9 @@ function solAyar(acik){
   localStorage.setItem("bmFlip_solAcik", acik ? "1" : "0");
 }
 function solDurumYukle(){
-  // Her açılışta kapalı başlat (localStorage ne olursa olsun)
-  solAyar(false);
+  /* Mobilde filtreler açık başlasın, masaüstünde kapalı */
+  const mobil = window.innerWidth <= 768;
+  solAyar(mobil ? true : false);
 }
 function dilAyarla(d){
   aktifDil = (d === "en") ? "en" : "tr";
@@ -863,12 +1013,12 @@ function dilAyarla(d){
   tumunuYenidenCiz();
 }
 
-/* İlk açılışta sadece Silahlar seçili olsun (ilk fetch yükünü azaltır) */
+/* İlk açılışta sadece Çantalar seçili olsun (ilk fetch yükünü azaltır) */
 function ilkAcilisKategoriAyarla(){
   const katlar = document.querySelectorAll(".anaKatSec");
   if(!katlar.length) return;
   katlar.forEach(cb => {
-    cb.checked = (cb.value === "Weapons");
+    cb.checked = (cb.value === "Bags");
   });
 }
 
@@ -910,16 +1060,22 @@ function bindEvents(){
 }
 
 async function init(){
-  // İlk açılışta kategoriyi sadece Silahlar yap
+  // İlk açılışta kategoriyi sadece Çantalar yap
   ilkAcilisKategoriAyarla();
 
   bindEvents();
   solDurumYukle();
+
+  // Mobilde performans için sonuç limiti biraz düşürülebilir
+  if(window.innerWidth <= 768){
+    document.getElementById("sonucLimiti").value = 150;
+  }
+
   await katalogYukle();
   dilAyarla(aktifDil);
   tumunuYenidenCiz();
 
-  // İlk veri çekme: sadece Silahlar seçili olduğu için istek sayısı düşer
+  // İlk veri çekme: sadece Çantalar seçili
   await canliGuncelle();
 }
 init();
