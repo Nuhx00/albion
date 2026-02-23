@@ -143,7 +143,7 @@
     <div class="sol-ust">
       <button id="toggleSol" class="menu-btn" title="Filtreleri aç/kapat">☰</button>
       <div class="sol-baslik">
-        <h2>Albion BM Flip</h2>
+        <h2>Albion BM Flip Yardımcısı</h2>
       </div>
     </div>
 
@@ -199,17 +199,18 @@
       <div class="bolum">
         <h3>Kategori</h3>
         <div class="grid2">
-          <label><input type="checkbox" class="anaKatSec" value="Weapons" checked> Silahlar</label>
-          <label><input type="checkbox" class="anaKatSec" value="Armors" checked> Armorlar</label>
-          <label><input type="checkbox" class="anaKatSec" value="Bags" checked> Çantalar</label>
-          <label><input type="checkbox" class="anaKatSec" value="Capes" checked> Pelerinler</label>
-          <label><input type="checkbox" class="anaKatSec" value="Offhands" checked> Offhandler</label>
+          <!-- Başlangıçta sadece Silahlar seçili -->
+          <label><input type="checkbox" class="anaKatSec" value="Weapons" checked> Silah</label>
+          <label><input type="checkbox" class="anaKatSec" value="Armors"> Armor</label>
+          <label><input type="checkbox" class="anaKatSec" value="Bags"> Çanta</label>
+          <label><input type="checkbox" class="anaKatSec" value="Capes"> Pelerin</label>
+          <label><input type="checkbox" class="anaKatSec" value="Offhands"> Offhand</label>
         </div>
         <div class="mini-note">Armorlar = Baş + Göğüs + Ayak zırhları</div>
       </div>
 
       <div class="bolum">
-        <h3>Şehirler</h3>
+        <h3>Kaynak Şehirler</h3>
         <div class="grid3">
           <label><input type="checkbox" class="sehirSec" value="Martlock" checked> Martlock</label>
           <label><input type="checkbox" class="sehirSec" value="Bridgewatch" checked> Bridgewatch</label>
@@ -225,11 +226,11 @@
         <h3>Kâr Filtreleri</h3>
         <div class="satir">
           <label>Min Net Kâr</label>
-          <input type="number" id="minNetKar" value="100000" step="1000">
+          <input type="number" id="minNetKar" value="50000" step="1000">
         </div>
         <div class="satir">
           <label>Min Kâr %</label>
-          <input type="number" id="minKarYuzde" value="15" step="1">
+          <input type="number" id="minKarYuzde" value="10" step="1">
         </div>
         <div class="satir sarma">
           <label style="min-width:auto;">
@@ -388,24 +389,6 @@ let aktifDil = localStorage.getItem("bmFlip_dil") || "tr";
 
 function trNum(n){ return Number(n||0).toLocaleString("tr-TR"); }
 function pct(d){ return (d*100).toFixed(1) + "%"; }
-
-function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
-
-async function fetchWithRetry(url, opts = {}, maxRetry = 3){
-  for(let deneme = 0; deneme <= maxRetry; deneme++){
-    const res = await fetch(url, opts);
-
-    if(res.ok) return res;
-
-    if(res.status === 429 && deneme < maxRetry){
-      const bekle = (deneme + 1) * 1500;
-      await sleep(bekle);
-      continue;
-    }
-
-    throw new Error(`AODP HTTP ${res.status}`);
-  }
-}
 
 function qLabel(q, dil=aktifDil){
   return dil === "en" ? (QUALITY_EN[q] || `Q${q}`) : (QUALITY_TR[q] || `Q${q}`);
@@ -609,29 +592,26 @@ async function aodpFiyatlariniGetir(){
   if(!adaylar.length) throw new Error("Seçili filtreye göre katalogda item bulunamadı.");
 
   const uniqItemIds = [...new Set(adaylar.map(x => x.itemId))];
-  const itemChunks = chunk(uniqItemIds, 30); // 429 riskini azaltmak için daha küçük chunk
+  const itemChunks = chunk(uniqItemIds, 35);
   const locations = [...cfg.sehirler, BM_KONUM];
   const qualitiesParam = cfg.qualities.join(",");
 
   const tumApi = [];
-  for(let i=0; i<itemChunks.length; i++){
-    const c = itemChunks[i];
+  for(const c of itemChunks){
     const itemParam = c.join(",");
     const locParam = locations.join(",");
     const url = `${host}/api/v2/stats/prices/${encodeURIComponent(itemParam)}.json?locations=${encodeURIComponent(locParam)}&qualities=${encodeURIComponent(qualitiesParam)}&_ts=${Date.now()}_${Math.random().toString(36).slice(2,7)}`;
 
-    const res = await fetchWithRetry(url, {
+    const res = await fetch(url, {
       cache: "no-store",
       headers: {
         "Cache-Control": "no-cache, no-store, max-age=0",
         "Pragma": "no-cache"
       }
-    }, 3);
-
+    });
+    if(!res.ok) throw new Error(`AODP HTTP ${res.status}`);
     const json = await res.json();
     if(Array.isArray(json)) tumApi.push(...json);
-
-    await sleep(250); // istekleri yumuşat, 429 azalt
   }
 
   sonApiHamKayit = tumApi.length;
@@ -873,13 +853,23 @@ function solAyar(acik){
   localStorage.setItem("bmFlip_solAcik", acik ? "1" : "0");
 }
 function solDurumYukle(){
-  solAyar(false); // her açılışta kapalı
+  // Her açılışta kapalı başlat (localStorage ne olursa olsun)
+  solAyar(false);
 }
 function dilAyarla(d){
   aktifDil = (d === "en") ? "en" : "tr";
   localStorage.setItem("bmFlip_dil", aktifDil);
   document.getElementById("dilSec").value = aktifDil;
   tumunuYenidenCiz();
+}
+
+/* İlk açılışta sadece Silahlar seçili olsun (ilk fetch yükünü azaltır) */
+function ilkAcilisKategoriAyarla(){
+  const katlar = document.querySelectorAll(".anaKatSec");
+  if(!katlar.length) return;
+  katlar.forEach(cb => {
+    cb.checked = (cb.value === "Weapons");
+  });
 }
 
 function bindEvents(){
@@ -920,12 +910,17 @@ function bindEvents(){
 }
 
 async function init(){
+  // İlk açılışta kategoriyi sadece Silahlar yap
+  ilkAcilisKategoriAyarla();
+
   bindEvents();
   solDurumYukle();
   await katalogYukle();
   dilAyarla(aktifDil);
   tumunuYenidenCiz();
-  // canliGuncelle(); // otomatik çekme kapalı, sadece butona basınca çeker
+
+  // İlk veri çekme: sadece Silahlar seçili olduğu için istek sayısı düşer
+  await canliGuncelle();
 }
 init();
 </script>
