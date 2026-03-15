@@ -1073,22 +1073,15 @@ async function aodpFiyatlariniGetir(forceLive=false){
 
   const metaByItemId = new Map(adaylar.map(x => [x.itemId, x]));
   const uniqItemIds = [...new Set(adaylar.map(x => x.itemId))];
-  const itemChunks = chunk(uniqItemIds, 24);
-  const locations = [...cfg.sehirler, BM_KONUM];
-  const qualitiesParam = cfg.qualities.join(",");
-  const tumApi = [];
+  const bmChunks = chunk(uniqItemIds, 40);
 
-  for(let i=0;i<itemChunks.length;i++){
-    if(controller.signal.aborted || istekNo !== aktifIstekNo){
-      throw new DOMException("İstek iptal edildi", "AbortError");
-    }
+  const bmQualities = [...cfg.qualities].sort((a,b)=>a-b);
+  const minSelectedQuality = bmQualities.length ? Math.min(...bmQualities) : 1;
+  const cityQualities = cfg.ustQualityEslemeAktif
+    ? [1,2,3,4,5].filter(q => q >= minSelectedQuality)
+    : [...bmQualities];
 
-    updateStatus(`Veri çekiliyor... ${i + 1}/${itemChunks.length}`, "warn");
-
-    const itemParam = itemChunks[i].join(",");
-    const locParam = locations.join(",");
-    const url = `${host}/api/v2/stats/prices/${encodeURIComponent(itemParam)}.json?locations=${encodeURIComponent(locParam)}&qualities=${encodeURIComponent(qualitiesParam)}&_ts=${Date.now()}_${Math.random().toString(36).slice(2,7)}`;
-
+  const safeFetchJson = async (url) => {
     const res = await fetch(url, {
       cache: "no-store",
       signal: controller.signal,
@@ -1098,38 +1091,119 @@ async function aodpFiyatlariniGetir(forceLive=false){
       }
     });
     if(!res.ok) throw new Error(`AODP HTTP ${res.status}`);
-    const json = await res.json();
-    if(Array.isArray(json)) tumApi.push(...json);
+    return res.json();
+  };
 
-    await new Promise(resolve => setTimeout(resolve, 0));
+  if(controller.signal.aborted || istekNo !== aktifIstekNo){
+    throw new DOMException("İstek iptal edildi", "AbortError");
+  }
+
+  // 1) Önce sadece Black Market buy tarafını tara.
+  const bmRows = [];
+  const candidateItemIds = new Set();
+  sonBmDoluSayisi = 0;
+  sonApiHamKayit = 0;
+  sonApiBmSatir = 0;
+  sonApiSehirSatir = 0;
+
+  for(let i=0;i<bmChunks.length;i++){
+    if(controller.signal.aborted || istekNo !== aktifIstekNo){
+      throw new DOMException("İstek iptal edildi", "AbortError");
+    }
+
+    updateStatus(`BM taranıyor... ${i + 1}/${bmChunks.length}`, "warn");
+
+    const itemParam = bmChunks[i].join(",");
+    const url = `${host}/api/v2/stats/prices/${encodeURIComponent(itemParam)}.json?locations=${encodeURIComponent(BM_KONUM)}&qualities=${encodeURIComponent(bmQualities.join(","))}&_ts=${Date.now()}_${Math.random().toString(36).slice(2,7)}`;
+
+    const json = await safeFetchJson(url);
+    if(Array.isArray(json)){
+      sonApiHamKayit += json.length;
+      sonApiBmSatir += json.length;
+
+      for(const bm of json){
+        const bmPrice = Number(bm.buy_price_max || 0);
+        if(bm.city !== BM_KONUM || bmPrice <= 0) continue;
+
+        const bmQuality = Number(bm.quality || 1);
+        if(bmQualities.length && !bmQualities.includes(bmQuality)) continue;
+
+        let meta = metaByItemId.get(bm.item_id);
+        if(!meta){
+          meta = {
+            itemId: bm.item_id,
+            itemNameEn: bm.item_id,
+            itemNameTr: bm.item_id,
+            tier: detectTierFromItemId(bm.item_id) ?? 0,
+            enchant: detectEnchantFromItemId(bm.item_id),
+            category: "Other",
+            mainCategory: "Other"
+          };
+        }
+
+        if(meta.mainCategory === "Other") continue;
+        if(!AUTO_MAIN_CATEGORIES.includes(meta.mainCategory)) continue;
+
+        sonBmDoluSayisi += 1;
+        bmRows.push(bm);
+        candidateItemIds.add(bm.item_id);
+      }
+    }
+
+    await new Promise(resolve => setTimeout(resolve, 8));
+  }
+
+  if(!candidateItemIds.size){
+    sonUretilenSatir = 0;
+    veriKirli = false;
+    veriBirKereYuklendi = true;
+    sonVeriZamani = Date.now();
+    updateStatus("BM buy bulundu ama eşleşen fırsat çıkmadı", "warn");
+    return [];
+  }
+
+  // 2) Sadece BM'de aktif buy olan itemler için şehir sell tarafını çek.
+  const cityItemIds = [...candidateItemIds];
+  const cityChunks = chunk(cityItemIds, 40);
+  const cityLocations = cfg.sehirler.join(",");
+  const byKey = new Map();
+
+  for(let i=0;i<cityChunks.length;i++){
+    if(controller.signal.aborted || istekNo !== aktifIstekNo){
+      throw new DOMException("İstek iptal edildi", "AbortError");
+    }
+
+    updateStatus(`Şehir fiyatları çekiliyor... ${i + 1}/${cityChunks.length}`, "warn");
+
+    const itemParam = cityChunks[i].join(",");
+    const url = `${host}/api/v2/stats/prices/${encodeURIComponent(itemParam)}.json?locations=${encodeURIComponent(cityLocations)}&qualities=${encodeURIComponent(cityQualities.join(","))}&_ts=${Date.now()}_${Math.random().toString(36).slice(2,7)}`;
+
+    const json = await safeFetchJson(url);
+    if(Array.isArray(json)){
+      sonApiHamKayit += json.length;
+      sonApiSehirSatir += json.length;
+
+      for(const r of json){
+        const q = Number(r.quality || 1);
+        byKey.set(`${r.item_id}|${r.city}|${q}`, r);
+      }
+    }
+
+    await new Promise(resolve => setTimeout(resolve, 8));
   }
 
   if(controller.signal.aborted || istekNo !== aktifIstekNo){
     throw new DOMException("İstek iptal edildi", "AbortError");
   }
 
-  sonApiHamKayit = tumApi.length;
-  sonApiBmSatir = tumApi.filter(x => x.city === BM_KONUM).length;
-  sonApiSehirSatir = tumApi.filter(x => x.city !== BM_KONUM).length;
-
-  const byKey = new Map();
-  for(const r of tumApi){
-    const q = Number(r.quality || 1);
-    byKey.set(`${r.item_id}|${r.city}|${q}`, r);
-  }
-
   const bestRowsMap = new Map();
-  sonBmDoluSayisi = 0;
 
-  for(const bm of tumApi){
-    if(bm.city !== BM_KONUM) continue;
+  for(const bm of bmRows){
     const bmPrice = Number(bm.buy_price_max || 0);
     if(bmPrice <= 0) continue;
 
     const bmQuality = Number(bm.quality || 1);
-    if(cfg.qualities.length && !cfg.qualities.includes(bmQuality)) continue;
-
-    sonBmDoluSayisi += 1;
+    const bmAgeMin = enTazeTarihDakika(bm);
 
     let meta = metaByItemId.get(bm.item_id);
     if(!meta){
@@ -1146,8 +1220,6 @@ async function aodpFiyatlariniGetir(forceLive=false){
 
     if(meta.mainCategory === "Other") continue;
     if(!AUTO_MAIN_CATEGORIES.includes(meta.mainCategory)) continue;
-
-    const bmAgeMin = enTazeTarihDakika(bm);
 
     let bestCity = null;
     for(const city of cfg.sehirler){
