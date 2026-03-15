@@ -544,12 +544,12 @@
       <div class="bolum">
         <h3>Kaynak Şehirler</h3>
         <div class="grid3">
-          <label><input type="checkbox" class="sehirSec" value="Martlock" checked> Martlock</label>
-          <label><input type="checkbox" class="sehirSec" value="Bridgewatch" checked> Bridgewatch</label>
+          <label><input type="checkbox" class="sehirSec" value="Martlock"> Martlock</label>
+          <label><input type="checkbox" class="sehirSec" value="Bridgewatch"> Bridgewatch</label>
           <label><input type="checkbox" class="sehirSec" value="Lymhurst" checked> Lymhurst</label>
-          <label><input type="checkbox" class="sehirSec" value="Thetford" checked> Thetford</label>
-          <label><input type="checkbox" class="sehirSec" value="Fort Sterling" checked> Fort Sterling</label>
-          <label><input type="checkbox" class="sehirSec" value="Caerleon" checked> Caerleon</label>
+          <label><input type="checkbox" class="sehirSec" value="Thetford"> Thetford</label>
+          <label><input type="checkbox" class="sehirSec" value="Fort Sterling"> Fort Sterling</label>
+          <label><input type="checkbox" class="sehirSec" value="Caerleon"> Caerleon</label>
           <label><input type="checkbox" class="sehirSec" value="Brecilien"> Brecilien</label>
         </div>
       </div>
@@ -558,11 +558,11 @@
         <h3>Kâr Filtreleri</h3>
         <div class="satir">
           <label>Min Net Kâr</label>
-          <input type="number" id="minNetKar" value="0" step="1000">
+          <input type="number" id="minNetKar" value="50000" step="1000">
         </div>
         <div class="satir">
           <label>Min Kâr %</label>
-          <input type="number" id="minKarYuzde" value="0" step="1">
+          <input type="number" id="minKarYuzde" value="5" step="1">
         </div>
         <div class="satir sarma">
           <label style="min-width:auto;">
@@ -599,14 +599,7 @@
             <input type="checkbox" id="premiumVergisiAktif" checked>
           </div>
         </div>
-
-        <div class="satir">
-          <label>%2.5 İşlem Ücreti</label>
-          <div class="inline-check">
-            <input type="checkbox" id="islemUcretiAktif" checked>
-          </div>
-        </div>
-      </div>
+</div>
 
       <div class="bolum">
         <h3>Görünüm</h3>
@@ -664,7 +657,7 @@
         <input type="text" id="aramaKutusu" placeholder="İtem / kategori / şehir / quality ara...">
         <span class="chip" id="sonucSayisiHap">0 sonuç</span>
         <span class="chip" id="bmDoluHap">0 BM kayıt</span>
-        <span class="chip" id="kesintiModuHap">Kesinti: %4 Açık | %2.5 Açık</span>
+        <span class="chip" id="kesintiModuHap">Kesinti: %4 Açık</span>
         <span class="chip warn" id="durumCipi">Hazırlanıyor...</span>
       </div>
 
@@ -976,7 +969,6 @@ function cfgOku(){
     ustQualityEslemeAktif: document.getElementById("ustQualityEslemeAktif").checked,
 
     premiumVergisiAktif: document.getElementById("premiumVergisiAktif").checked,
-    islemUcretiAktif: document.getElementById("islemUcretiAktif").checked,
 
     sonucLimiti: Math.min(MAX_RESULT_LIMIT, Math.max(1, Number(document.getElementById("sonucLimiti").value || 100))),
     arama: (document.getElementById("aramaKutusu").value || "").trim().toLowerCase()
@@ -1282,7 +1274,7 @@ async function aodpFiyatlariniGetir(forceLive=false){
 
 function satirlariHesapla(rows, cfg){
   const premiumTaxRate = cfg.premiumVergisiAktif ? 0.04 : 0;
-  const islemFeeRate = cfg.islemUcretiAktif ? 0.025 : 0;
+  const islemFeeRate = 0;
 
   return rows.map(r=>{
     const grossProfit = r.bmPrice - r.cityPrice;
@@ -1477,8 +1469,7 @@ function statsCiz(tumRows, gorunenRows){
 
 function kesintiChipGuncelle(){
   const p = document.getElementById("premiumVergisiAktif").checked ? "Açık" : "Kapalı";
-  const i = document.getElementById("islemUcretiAktif").checked ? "Açık" : "Kapalı";
-  document.getElementById("kesintiModuHap").textContent = `Kesinti: %4 ${p} | %2.5 ${i}`;
+  document.getElementById("kesintiModuHap").textContent = `Kesinti: %4 ${p}`;
 }
 
 function tumunuYenidenCiz(){
@@ -1581,7 +1572,7 @@ function bindEvents(){
 
   [
     "minNetKar","minKarYuzde","tierBazliEsik","maxCityAgeMin","maxBmAgeMin",
-    "sonucLimiti","premiumVergisiAktif","islemUcretiAktif","ustQualityEslemeAktif"
+    "sonucLimiti","premiumVergisiAktif","ustQualityEslemeAktif"
   ].forEach(id => document.getElementById(id).addEventListener("change", debouncedRender));
 
   [".tierSec",".enchSec",".qualSec",".sehirSec"].forEach(sel => {
