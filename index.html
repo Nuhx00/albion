@@ -489,10 +489,8 @@
         <h3>Genel</h3>
         <div class="satir">
           <label>Sunucu</label>
-          <select id="sunucu">
-            <option value="EU" selected>EU</option>
-            <option value="NA">NA</option>
-            <option value="Asia">Asia</option>
+          <select id="sunucu" disabled>
+            <option value="EU" selected>Europe (EU)</option>
           </select>
         </div>
 
@@ -703,10 +701,12 @@ let aktifDil = localStorage.getItem("bmFlip_dil") || "tr";
 const MAX_RESULT_LIMIT = 100;
 const CACHE_TTL_MS = 120000;
 const BM_KONUM = "Black Market";
-const ITEM_CHUNK_SIZE = 220;
-const REQUEST_DELAY_MS = 220;
+const ITEM_CHUNK_SIZE = 260;
+const REQUEST_DELAY_MS = 280;
 const FETCH_CONCURRENCY = 2;
+const FETCH_TIMEOUT_MS = 15000;
 const MAX_429_RETRIES = 4;
+const MAX_NETWORK_RETRIES = 2;
 const RETRY_BACKOFF_MS = 10000;
 const AUTO_FETCH_ON_LOAD = false;
 const AUTO_REFRESH_ON_FILTER_CHANGE = false;
@@ -750,10 +750,9 @@ const AUTO_MAIN_CATEGORIES = ["Weapons","Armors","Bags","Capes","Offhands"];
 const DISPLAY_MAIN_CATEGORIES = [...AUTO_MAIN_CATEGORIES, "Unknown"];
 
 const AODP_HOSTS = {
-  EU: "https://europe.albion-online-data.com",
-  NA: "https://west.albion-online-data.com",
-  Asia: "https://east.albion-online-data.com"
+  EU: "https://europe.albion-online-data.com"
 };
+const FORCED_AODP_HOST = AODP_HOSTS.EU;
 
 function trNum(n){ return Number(n || 0).toLocaleString("tr-TR"); }
 function pct(d){ return (d * 100).toFixed(1) + "%"; }
@@ -1081,7 +1080,7 @@ async function aodpFiyatlariniGetir(forceLive=false){
   fetchController = controller;
   const istekNo = ++aktifIstekNo;
 
-  const host = AODP_HOSTS[document.getElementById("sunucu").value];
+  const host = FORCED_AODP_HOST;
   const adaylar = filtrelereGoreItemMetalariOlustur(cfg);
   if(!adaylar.length) throw new Error("Seçili filtreye göre katalogda item bulunamadı.");
 
@@ -1102,27 +1101,65 @@ async function aodpFiyatlariniGetir(forceLive=false){
   const safeFetchJson = async (url, progressLabel = "") => {
     let attempt = 0;
     while(true){
-      const res = await fetch(url, {
-        cache: "no-store",
-        signal: controller.signal,
-        headers: {
-          "Cache-Control": "no-cache, no-store, max-age=0",
-          "Pragma": "no-cache"
+      const timeoutController = new AbortController();
+      const timeoutId = setTimeout(() => timeoutController.abort(), FETCH_TIMEOUT_MS);
+      const onAbort = () => timeoutController.abort();
+      controller.signal.addEventListener("abort", onAbort, { once:true });
+
+      try{
+        const res = await fetch(url, {
+          cache: "no-store",
+          signal: timeoutController.signal,
+          headers: {
+            "Accept": "application/json",
+            "Cache-Control": "no-cache, no-store, max-age=0",
+            "Pragma": "no-cache"
+          }
+        });
+
+        clearTimeout(timeoutId);
+        controller.signal.removeEventListener("abort", onAbort);
+
+        if(res.ok) return await res.json();
+
+        if(res.status === 429 && attempt < MAX_429_RETRIES){
+          const retryAfter = Number(res.headers.get("Retry-After") || 0);
+          const waitMs = retryAfter > 0 ? retryAfter * 1000 : RETRY_BACKOFF_MS * (attempt + 1);
+          updateStatus(`Rate limit var${progressLabel ? " • " + progressLabel : ""} • ${Math.ceil(waitMs/1000)} sn bekleniyor`, "warn");
+          attempt += 1;
+          await sleep(waitMs);
+          continue;
         }
-      });
 
-      if(res.ok) return res.json();
+        if(res.status >= 500 && attempt < MAX_NETWORK_RETRIES){
+          const waitMs = 1500 * (attempt + 1);
+          updateStatus(`Sunucu cevap vermedi${progressLabel ? " • " + progressLabel : ""} • tekrar deneniyor`, "warn");
+          attempt += 1;
+          await sleep(waitMs);
+          continue;
+        }
 
-      if(res.status === 429 && attempt < MAX_429_RETRIES){
-        const retryAfter = Number(res.headers.get("Retry-After") || 0);
-        const waitMs = retryAfter > 0 ? retryAfter * 1000 : RETRY_BACKOFF_MS * (attempt + 1);
-        updateStatus(`Rate limit var${progressLabel ? " • " + progressLabel : ""} • ${Math.ceil(waitMs/1000)} sn bekleniyor`, "warn");
-        attempt += 1;
-        await sleep(waitMs);
-        continue;
+        return { __fetchError:true, status:res.status, url, progressLabel };
+      }catch(err){
+        clearTimeout(timeoutId);
+        controller.signal.removeEventListener("abort", onAbort);
+
+        if(controller.signal.aborted || err?.name === "AbortError"){
+          if(controller.signal.aborted){
+            throw new DOMException("İstek iptal edildi", "AbortError");
+          }
+        }
+
+        if(attempt < MAX_NETWORK_RETRIES){
+          const waitMs = 1200 * (attempt + 1);
+          updateStatus(`Bağlantı sorunu${progressLabel ? " • " + progressLabel : ""} • tekrar deneniyor`, "warn");
+          attempt += 1;
+          await sleep(waitMs);
+          continue;
+        }
+
+        return { __fetchError:true, status:"network", message:err?.message || "Failed to fetch", url, progressLabel };
       }
-
-      throw new Error(`AODP HTTP ${res.status}`);
     }
   };
 
@@ -1144,14 +1181,26 @@ async function aodpFiyatlariniGetir(forceLive=false){
     const rangeEnd = Math.min(start + group.length, itemChunks.length);
     updateStatus(`Veri çekiliyor... ${rangeStart}-${rangeEnd}/${itemChunks.length}`, "warn");
 
-    const responses = await Promise.all(group.map(async (ids, localIndex) => {
+    const settled = await Promise.allSettled(group.map(async (ids, localIndex) => {
       const globalIndex = start + localIndex;
       const itemParam = ids.join(",");
       const url = `${host}/api/v2/stats/prices/${encodeURIComponent(itemParam)}.json?locations=${encodeURIComponent(locations)}&qualities=${encodeURIComponent(requestQualities.join(","))}&_ts=${Date.now()}_${Math.random().toString(36).slice(2,7)}`;
       return safeFetchJson(url, `${globalIndex + 1}/${itemChunks.length}`);
     }));
 
-    for(const json of responses){
+    let failedInBatch = 0;
+    for(const result of settled){
+      if(result.status !== "fulfilled"){
+        failedInBatch += 1;
+        continue;
+      }
+
+      const json = result.value;
+      if(!json || json.__fetchError){
+        failedInBatch += 1;
+        continue;
+      }
+
       if(Array.isArray(json)){
         sonApiHamKayit += json.length;
 
@@ -1187,11 +1236,19 @@ async function aodpFiyatlariniGetir(forceLive=false){
       }
     }
 
+    if(failedInBatch){
+      updateStatus(`Kısmi veri geldi • ${failedInBatch} paket atlandı`, bmRows.length ? "warn" : "bad");
+    }
+
     if(start + FETCH_CONCURRENCY < itemChunks.length) await sleep(REQUEST_DELAY_MS);
   }
 
   if(controller.signal.aborted || istekNo !== aktifIstekNo){
     throw new DOMException("İstek iptal edildi", "AbortError");
+  }
+
+  if(!bmRows.length && !sonApiHamKayit){
+    throw new Error("AODP'den veri alınamadı. Tekrar dene.");
   }
 
   const bestRowsMap = new Map();
@@ -1501,7 +1558,7 @@ function tumunuYenidenCiz(){
     `${map[gecerliSiralama.key] || gecerliSiralama.key} ${gecerliSiralama.dir === "desc" ? "↓" : "↑"} • İlk ${cfg.sonucLimiti}`;
 
   if(!hamVeri.length && !veriBirKereYuklendi){
-    updateStatus("Hazır. Veri Güncelle butonuna basınca tarama başlar.", "warn");
+    updateStatus("Hazır. Europe veri taraması için Veri Güncelle butonuna bas.", "warn");
   }else if(veriKirli){
     updateStatus("Filtre değişti • veri yenileniyor...", "warn");
   }
@@ -1525,8 +1582,7 @@ async function canliGuncelle(forceLive=false){
       return;
     }
     console.error(err);
-    updateStatus("Canlı veri çekme hatası", "bad");
-    alert("Canlı veri çekme hatası: " + err.message);
+    updateStatus(`Canlı veri çekme hatası • ${err.message}`, "bad");
   }finally{
     btn.disabled = false;
     btn.textContent = eski;
@@ -1628,7 +1684,7 @@ async function init(){
   if(AUTO_FETCH_ON_LOAD){
     await canliGuncelle(false);
   }else{
-    updateStatus("Hazır. Veri Güncelle butonuna basınca tarama başlar.", "warn");
+    updateStatus("Hazır. Europe veri taraması için Veri Güncelle butonuna bas.", "warn");
   }
 }
 init();
