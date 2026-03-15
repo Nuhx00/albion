@@ -61,6 +61,9 @@
     .ustbar{display:grid;grid-template-columns:1fr auto auto auto;gap:8px;margin-bottom:12px;align-items:center}
     .ustbar .panel{padding:10px}
     .chip{display:inline-flex;gap:6px;align-items:center;border:1px solid var(--line);background:var(--panel2);border-radius:999px;padding:4px 8px;font-size:12px;color:var(--muted)}
+    .chip.ok{border-color:#1e6f4f;color:#7ef2b4}
+    .chip.warn{border-color:#7a5a16;color:#ffd166}
+    .chip.bad{border-color:#6b2730;color:#ff9ba0}
 
     .stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-bottom:10px}
     .stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px}
@@ -476,16 +479,11 @@
       </div>
 
       <div class="bolum">
-        <h3>Kategori</h3>
-        <div class="grid2">
-          <!-- Başlangıçta sadece Çantalar seçili -->
-          <label><input type="checkbox" class="anaKatSec" value="Weapons"> Silah</label>
-          <label><input type="checkbox" class="anaKatSec" value="Armors"> Armor</label>
-          <label><input type="checkbox" class="anaKatSec" value="Bags" checked> Çanta</label>
-          <label><input type="checkbox" class="anaKatSec" value="Capes"> Pelerin</label>
-          <label><input type="checkbox" class="anaKatSec" value="Offhands"> Offhand</label>
+        <h3>Kapsam</h3>
+        <div class="panel" style="padding:10px;background:var(--panel2)">
+          <div style="font-weight:600;margin-bottom:4px;">Tüm kategoriler otomatik taranır</div>
+          <div class="mini-note" style="margin-top:0;">Silah + Armor + Çanta + Pelerin + Offhand kategorileri tek tek seçmeden birlikte taranır. Ana sayfa net kâra göre en iyi 100 sonucu gösterir.</div>
         </div>
-        <div class="mini-note">Armorlar = Baş + Göğüs + Ayak zırhları</div>
       </div>
 
       <div class="bolum">
@@ -505,16 +503,34 @@
         <h3>Kâr Filtreleri</h3>
         <div class="satir">
           <label>Min Net Kâr</label>
-          <input type="number" id="minNetKar" value="50000" step="1000">
+          <input type="number" id="minNetKar" value="0" step="1000">
         </div>
         <div class="satir">
           <label>Min Kâr %</label>
-          <input type="number" id="minKarYuzde" value="10" step="1">
+          <input type="number" id="minKarYuzde" value="0" step="1">
         </div>
         <div class="satir sarma">
           <label style="min-width:auto;">
-            <input type="checkbox" id="tierBazliEsik" checked>
+            <input type="checkbox" id="tierBazliEsik">
             Tier'e göre daha sıkı filtre uygula
+          </label>
+        </div>
+      </div>
+
+      <div class="bolum">
+        <h3>Veri Tazeliği</h3>
+        <div class="satir">
+          <label>Maks Şehir Veri Yaşı (dk)</label>
+          <input type="number" id="maxCityAgeMin" value="180" step="5">
+        </div>
+        <div class="satir">
+          <label>Maks BM Veri Yaşı (dk)</label>
+          <input type="number" id="maxBmAgeMin" value="90" step="5">
+        </div>
+        <div class="satir sarma">
+          <label style="min-width:auto;">
+            <input type="checkbox" id="ustQualityEslemeAktif" checked>
+            BM quality için şehirde üst quality en ucuzu kullan
           </label>
         </div>
       </div>
@@ -541,8 +557,9 @@
         <h3>Görünüm</h3>
         <div class="satir">
           <label>Sonuç Limiti</label>
-          <input type="number" id="sonucLimiti" value="300" step="1">
+          <input type="number" id="sonucLimiti" value="100" step="1" max="100" readonly>
         </div>
+        <div class="mini-note">Ana sayfa daima net kâra göre sıralanmış ilk 100 fırsatı gösterir.</div>
       </div>
 
       <div class="bolum">
@@ -557,7 +574,7 @@
         </div>
 
         <div class="info-row">
-          <span class="info-tip" data-tip="Kapsam: Silah + Armor + Çanta + Pelerin + Offhand. Sonuçlar katalog ve seçili filtrelere göre üretilir.">!</span>
+          <span class="info-tip" data-tip="Kapsam: Silah + Armor + Çanta + Pelerin + Offhand kategorilerinin tamamı otomatik taranır. Sonuçlar katalog ve seçili tier/enchant/quality/şehir filtrelerine göre üretilir.">!</span>
           <span><strong>Kapsam</strong></span>
         </div>
 
@@ -578,7 +595,7 @@
     <div class="ustbar">
       <div class="panel">
         <div style="font-weight:700;margin-bottom:4px;">BM Flip</div>
-        <div class="small muted">Sıralama: <span id="siralamaBilgi">Net Kâr ↓</span></div>
+        <div class="small muted">Sıralama: <span id="siralamaBilgi">Net Kâr ↓ • Tüm itemler</span></div>
       </div>
       <div class="panel"><span class="chip">Kaynak: <strong id="veriKaynakMetni" style="color:var(--text)">AODP Canlı</strong></span></div>
       <div class="panel"><span class="chip">Son Güncelleme: <strong id="sonGuncellemeMetni" style="color:var(--text)">-</strong></span></div>
@@ -593,6 +610,7 @@
         <span class="chip" id="sonucSayisiHap">0 sonuç</span>
         <span class="chip" id="bmDoluHap">0 BM kayıt</span>
         <span class="chip" id="kesintiModuHap">Kesinti: %4 Açık | %2.5 Açık</span>
+        <span class="chip warn" id="durumCipi">Hazırlanıyor...</span>
       </div>
 
       <div id="mobilKartlar" class="mobile-cards"></div>
@@ -606,6 +624,7 @@
               <th data-sort="enchant">Enchant</th>
               <th data-sort="mainCategoryUi">Kategori</th>
               <th data-sort="sourceCity">Kaynak Şehir</th>
+              <th data-sort="cityQualityUsed">Şehir Q</th>
               <th data-sort="cityPrice">Şehir Fiyatı</th>
               <th data-sort="bmPrice">BM Fiyatı</th>
               <th data-sort="cityAgeMin">Şehir Veri Yaşı</th>
@@ -623,6 +642,7 @@
 </div>
 
 <script>
+
 let hamVeri = [];
 let gorunenVeri = [];
 let gecerliSiralama = { key: "netProfit", dir: "desc" };
@@ -630,6 +650,19 @@ let gecerliSiralama = { key: "netProfit", dir: "desc" };
 let sonApiHamKayit = 0, sonApiBmSatir = 0, sonApiSehirSatir = 0, sonUretilenSatir = 0;
 let sonBmDoluSayisi = 0;
 let ITEM_CATALOG = [];
+let aktifDil = localStorage.getItem("bmFlip_dil") || "tr";
+
+const MAX_RESULT_LIMIT = 100;
+const CACHE_TTL_MS = 120000;
+const BM_KONUM = "Black Market";
+
+let fetchController = null;
+let aktifIstekNo = 0;
+let veriKirli = false;
+let veriBirKereYuklendi = false;
+let sonVeriZamani = null;
+
+const LIVE_CACHE = new Map();
 
 const FALLBACK_CATALOG = [
   { baseId:"MAIN_SWORD", nameEn:"Broadsword", nameTr:"Geniş Kılıç", category:"Weapon" },
@@ -658,35 +691,46 @@ const MAIN_CAT_EN = {
   Capes: "Capes",
   Offhands: "Offhands"
 };
+const AUTO_MAIN_CATEGORIES = ["Weapons","Armors","Bags","Capes","Offhands"];
 
 const AODP_HOSTS = {
   EU: "https://europe.albion-online-data.com",
   NA: "https://west.albion-online-data.com",
   Asia: "https://east.albion-online-data.com"
 };
-const BM_KONUM = "Black Market";
 
-let aktifDil = localStorage.getItem("bmFlip_dil") || "tr";
-
-function trNum(n){ return Number(n||0).toLocaleString("tr-TR"); }
-function pct(d){ return (d*100).toFixed(1) + "%"; }
+function trNum(n){ return Number(n || 0).toLocaleString("tr-TR"); }
+function pct(d){ return (d * 100).toFixed(1) + "%"; }
 
 function qLabel(q, dil=aktifDil){
   return dil === "en" ? (QUALITY_EN[q] || `Q${q}`) : (QUALITY_TR[q] || `Q${q}`);
 }
 function itemUi(row){
-  return aktifDil === "en" ? (row.itemNameEn || row.itemNameTr || row.itemId) : (row.itemNameTr || row.itemNameEn || row.itemId);
+  return aktifDil === "en"
+    ? (row.itemNameEn || row.itemNameTr || row.itemId)
+    : (row.itemNameTr || row.itemNameEn || row.itemId);
 }
 function qBadge(row){ return `<span class="qbadge">Q${row.quality} ${qLabel(row.quality)}</span>`; }
 function mainCatUi(code){
   return aktifDil === "en" ? (MAIN_CAT_EN[code] || code) : (MAIN_CAT_TR[code] || code);
 }
-
 function seciliDegerler(selector, sayi=false){
-  return [...document.querySelectorAll(selector)].filter(x=>x.checked).map(x=>sayi ? Number(x.value) : x.value);
+  return [...document.querySelectorAll(selector)].filter(x => x.checked).map(x => sayi ? Number(x.value) : x.value);
 }
 function chunk(arr, size){
-  const out=[]; for(let i=0;i<arr.length;i+=size) out.push(arr.slice(i,i+size)); return out;
+  const out = [];
+  for(let i=0;i<arr.length;i+=size) out.push(arr.slice(i, i + size));
+  return out;
+}
+function debounce(fn, delay=250){
+  let timer = null;
+  return (...args)=>{
+    clearTimeout(timer);
+    timer = setTimeout(()=>fn(...args), delay);
+  };
+}
+function cloneRows(rows){
+  return rows.map(x => ({...x}));
 }
 
 function tierMinNetKar(t){ return t===5?30000 : t===6?60000 : t===7?120000 : t===8?250000 : 0; }
@@ -704,7 +748,7 @@ function parseAodpDate(ts){
 function dkFark(ts){
   const d = parseAodpDate(ts);
   if(!d) return 9999;
-  return Math.max(0, Math.floor((Date.now()-d.getTime())/60000));
+  return Math.max(0, Math.floor((Date.now() - d.getTime()) / 60000));
 }
 function enTazeTarihDakika(row){
   const fields = [
@@ -723,12 +767,12 @@ function enTazeTarihDakika(row){
     if(!newest || d > newest) newest = d;
   }
   if(!newest) return 9999;
-  return Math.max(0, Math.floor((Date.now()-newest.getTime())/60000));
+  return Math.max(0, Math.floor((Date.now() - newest.getTime()) / 60000));
 }
 function sureText(dk){
-  if(!Number.isFinite(dk) || dk>=9999) return "-";
+  if(!Number.isFinite(dk) || dk >= 9999) return "-";
   if(dk < 60) return `${dk} dk`;
-  const s = Math.floor(dk/60), d = dk%60;
+  const s = Math.floor(dk / 60), d = dk % 60;
   return d ? `${s} sa ${d} dk` : `${s} sa`;
 }
 function yasClass(dk){
@@ -765,6 +809,41 @@ function toMainCategory(cat){
   if (c.includes("offhand") || c.includes("off-hand")) return "Offhands";
 
   return "Other";
+}
+
+function updateStatus(msg, type="normal"){
+  const el = document.getElementById("durumCipi");
+  if(!el) return;
+  el.textContent = msg;
+  el.className = "chip";
+  if(type === "ok") el.classList.add("ok");
+  if(type === "warn") el.classList.add("warn");
+  if(type === "bad") el.classList.add("bad");
+}
+function sonGuncellemeYaz(){
+  document.getElementById("sonGuncellemeMetni").textContent = sonVeriZamani
+    ? new Date(sonVeriZamani).toLocaleTimeString("tr-TR")
+    : "-";
+}
+function veriImzasi(cfg){
+  return JSON.stringify({
+    sunucu: document.getElementById("sunucu").value,
+    tierler: [...cfg.tierler].sort((a,b)=>a-b),
+    enchantlar: [...cfg.enchantlar].sort((a,b)=>a-b),
+    qualities: [...cfg.qualities].sort((a,b)=>a-b),
+    anaKategoriler: [...cfg.anaKategoriler].sort(),
+    sehirler: [...cfg.sehirler].sort(),
+    ustQualityEslemeAktif: !!cfg.ustQualityEslemeAktif
+  });
+}
+function aktifEsik(row, cfg){
+  const gNet = cfg.minNetKar;
+  const gPct = cfg.minKarYuzde / 100;
+  if(!cfg.tierBazliEsik) return { minNet:gNet, minPct:gPct };
+  return {
+    minNet: Math.max(gNet, tierMinNetKar(row.tier)),
+    minPct: Math.max(gPct, tierMinPct(row.tier))
+  };
 }
 
 async function katalogYukle(){
@@ -807,84 +886,134 @@ function cfgOku(){
     tierler: seciliDegerler(".tierSec", true),
     enchantlar: seciliDegerler(".enchSec", true),
     qualities: seciliDegerler(".qualSec", true),
-    anaKategoriler: seciliDegerler(".anaKatSec", false),
+    anaKategoriler: [...AUTO_MAIN_CATEGORIES],
     sehirler: seciliDegerler(".sehirSec", false),
 
     minNetKar: Number(document.getElementById("minNetKar").value || 0),
     minKarYuzde: Number(document.getElementById("minKarYuzde").value || 0),
     tierBazliEsik: document.getElementById("tierBazliEsik").checked,
 
+    maxCityAgeMin: Number(document.getElementById("maxCityAgeMin").value || 9999),
+    maxBmAgeMin: Number(document.getElementById("maxBmAgeMin").value || 9999),
+    ustQualityEslemeAktif: document.getElementById("ustQualityEslemeAktif").checked,
+
     premiumVergisiAktif: document.getElementById("premiumVergisiAktif").checked,
     islemUcretiAktif: document.getElementById("islemUcretiAktif").checked,
 
-    sonucLimiti: Number(document.getElementById("sonucLimiti").value || 300),
+    sonucLimiti: Math.min(MAX_RESULT_LIMIT, Math.max(1, Number(document.getElementById("sonucLimiti").value || 100))),
     arama: (document.getElementById("aramaKutusu").value || "").trim().toLowerCase()
   };
 }
 
-function aktifEsik(row, cfg){
-  const gNet = cfg.minNetKar;
-  const gPct = cfg.minKarYuzde / 100;
-  if(!cfg.tierBazliEsik) return { minNet:gNet, minPct:gPct };
-  return {
-    minNet: Math.max(gNet, tierMinNetKar(row.tier)),
-    minPct: Math.max(gPct, tierMinPct(row.tier))
-  };
-}
-
-function filtrelereGoreAdaylarOlustur(){
-  const cfg = cfgOku();
+function filtrelereGoreItemMetalariOlustur(cfg){
   const adaylar = [];
-
   for(const item of ITEM_CATALOG){
     if(item.mainCategory === "Other") continue;
-    if(cfg.anaKategoriler.length && !cfg.anaKategoriler.includes(item.mainCategory)) continue;
+    if(!AUTO_MAIN_CATEGORIES.includes(item.mainCategory)) continue;
 
     for(const t of cfg.tierler){
       for(const e of cfg.enchantlar){
-        for(const q of cfg.qualities){
-          adaylar.push({
-            ...item,
-            tier: t,
-            enchant: e,
-            quality: q,
-            itemId: buildItemId(item, t, e),
-            itemNameEn: item.nameEn,
-            itemNameTr: item.nameTr
-          });
-        }
+        adaylar.push({
+          ...item,
+          tier: t,
+          enchant: e,
+          itemId: buildItemId(item, t, e),
+          itemNameEn: item.nameEn,
+          itemNameTr: item.nameTr
+        });
       }
     }
   }
   return adaylar;
 }
 
-async function aodpFiyatlariniGetir(){
+function findCityCandidate(byKey, itemId, city, bmQuality, useUpperQuality){
+  let best = null;
+
+  if(useUpperQuality){
+    for(let q=bmQuality; q<=5; q++){
+      const row = byKey.get(`${itemId}|${city}|${q}`);
+      if(!row) continue;
+      const cityPrice = Number(row.sell_price_min || 0);
+      if(cityPrice <= 0) continue;
+      if(!best || cityPrice < best.cityPrice || (cityPrice === best.cityPrice && dkFark(row.sell_price_min_date) < best.cityAgeMin)){
+        best = {
+          row,
+          cityPrice,
+          cityQualityUsed: q,
+          cityAgeMin: dkFark(row.sell_price_min_date)
+        };
+      }
+    }
+    return best;
+  }
+
+  const exact = byKey.get(`${itemId}|${city}|${bmQuality}`);
+  if(!exact) return null;
+  const cityPrice = Number(exact.sell_price_min || 0);
+  if(cityPrice <= 0) return null;
+  return {
+    row: exact,
+    cityPrice,
+    cityQualityUsed: bmQuality,
+    cityAgeMin: dkFark(exact.sell_price_min_date)
+  };
+}
+
+async function aodpFiyatlariniGetir(forceLive=false){
   const cfg = cfgOku();
 
   if(!cfg.sehirler.length) throw new Error("En az 1 kaynak şehir seç.");
   if(!cfg.tierler.length) throw new Error("En az 1 tier seç.");
   if(!cfg.enchantlar.length) throw new Error("En az 1 enchant seç.");
   if(!cfg.qualities.length) throw new Error("En az 1 quality seç.");
-  if(!cfg.anaKategoriler.length) throw new Error("En az 1 kategori seç.");
+
+  const sig = veriImzasi(cfg);
+  const cache = LIVE_CACHE.get(sig);
+  if(!forceLive && cache && (Date.now() - cache.ts) < CACHE_TTL_MS){
+    sonApiHamKayit = cache.meta.sonApiHamKayit;
+    sonApiBmSatir = cache.meta.sonApiBmSatir;
+    sonApiSehirSatir = cache.meta.sonApiSehirSatir;
+    sonUretilenSatir = cache.meta.sonUretilenSatir;
+    sonBmDoluSayisi = cache.meta.sonBmDoluSayisi;
+    veriKirli = false;
+    veriBirKereYuklendi = true;
+    sonVeriZamani = cache.fetchedAt;
+    updateStatus(`Önbellekten yüklendi • ${Math.round((Date.now() - cache.ts)/1000)} sn önce`, "ok");
+    return cloneRows(cache.rows);
+  }
+
+  if(fetchController) fetchController.abort();
+
+  const controller = new AbortController();
+  fetchController = controller;
+  const istekNo = ++aktifIstekNo;
 
   const host = AODP_HOSTS[document.getElementById("sunucu").value];
-  const adaylar = filtrelereGoreAdaylarOlustur();
+  const adaylar = filtrelereGoreItemMetalariOlustur(cfg);
   if(!adaylar.length) throw new Error("Seçili filtreye göre katalogda item bulunamadı.");
 
+  const metaByItemId = new Map(adaylar.map(x => [x.itemId, x]));
   const uniqItemIds = [...new Set(adaylar.map(x => x.itemId))];
-  const itemChunks = chunk(uniqItemIds, 35);
+  const itemChunks = chunk(uniqItemIds, 24);
   const locations = [...cfg.sehirler, BM_KONUM];
   const qualitiesParam = cfg.qualities.join(",");
-
   const tumApi = [];
-  for(const c of itemChunks){
-    const itemParam = c.join(",");
+
+  for(let i=0;i<itemChunks.length;i++){
+    if(controller.signal.aborted || istekNo !== aktifIstekNo){
+      throw new DOMException("İstek iptal edildi", "AbortError");
+    }
+
+    updateStatus(`Veri çekiliyor... ${i + 1}/${itemChunks.length}`, "warn");
+
+    const itemParam = itemChunks[i].join(",");
     const locParam = locations.join(",");
     const url = `${host}/api/v2/stats/prices/${encodeURIComponent(itemParam)}.json?locations=${encodeURIComponent(locParam)}&qualities=${encodeURIComponent(qualitiesParam)}&_ts=${Date.now()}_${Math.random().toString(36).slice(2,7)}`;
 
     const res = await fetch(url, {
       cache: "no-store",
+      signal: controller.signal,
       headers: {
         "Cache-Control": "no-cache, no-store, max-age=0",
         "Pragma": "no-cache"
@@ -893,6 +1022,12 @@ async function aodpFiyatlariniGetir(){
     if(!res.ok) throw new Error(`AODP HTTP ${res.status}`);
     const json = await res.json();
     if(Array.isArray(json)) tumApi.push(...json);
+
+    await new Promise(resolve => setTimeout(resolve, 0));
+  }
+
+  if(controller.signal.aborted || istekNo !== aktifIstekNo){
+    throw new DOMException("İstek iptal edildi", "AbortError");
   }
 
   sonApiHamKayit = tumApi.length;
@@ -905,71 +1040,94 @@ async function aodpFiyatlariniGetir(){
     byKey.set(`${r.item_id}|${r.city}|${q}`, r);
   }
 
-  const bmDoluMap = new Map();
-  for(const r of tumApi){
-    if(r.city !== BM_KONUM) continue;
-    const bmBuy = Number(r.buy_price_max || 0);
-    if(bmBuy <= 0) continue;
-    const q = Number(r.quality || 1);
-    bmDoluMap.set(`${r.item_id}|${q}`, r);
-  }
-  sonBmDoluSayisi = bmDoluMap.size;
+  const bestRowsMap = new Map();
+  sonBmDoluSayisi = 0;
 
-  const adayIndex = new Map();
-  for(const a of adaylar){
-    adayIndex.set(`${a.itemId}|${a.quality}`, a);
-  }
+  for(const bm of tumApi){
+    if(bm.city !== BM_KONUM) continue;
+    const bmPrice = Number(bm.buy_price_max || 0);
+    if(bmPrice <= 0) continue;
 
-  const satirlar = [];
-  for(const [k, bm] of bmDoluMap.entries()){
-    let meta = adayIndex.get(k);
+    const bmQuality = Number(bm.quality || 1);
+    if(cfg.qualities.length && !cfg.qualities.includes(bmQuality)) continue;
 
+    sonBmDoluSayisi += 1;
+
+    let meta = metaByItemId.get(bm.item_id);
     if(!meta){
-      const [itemId, qStr] = k.split("|");
-      const q = Number(qStr);
       meta = {
-        itemId,
-        itemNameEn: itemId,
-        itemNameTr: itemId,
-        quality: q,
-        tier: detectTierFromItemId(itemId) ?? 0,
-        enchant: detectEnchantFromItemId(itemId),
+        itemId: bm.item_id,
+        itemNameEn: bm.item_id,
+        itemNameTr: bm.item_id,
+        tier: detectTierFromItemId(bm.item_id) ?? 0,
+        enchant: detectEnchantFromItemId(bm.item_id),
         category: "Other",
         mainCategory: "Other"
       };
     }
 
     if(meta.mainCategory === "Other") continue;
-    if(cfg.anaKategoriler.length && !cfg.anaKategoriler.includes(meta.mainCategory)) continue;
+    if(!AUTO_MAIN_CATEGORIES.includes(meta.mainCategory)) continue;
 
+    const bmAgeMin = enTazeTarihDakika(bm);
+
+    let bestCity = null;
     for(const city of cfg.sehirler){
-      const cityRow = byKey.get(`${meta.itemId}|${city}|${meta.quality}`);
-      if(!cityRow) continue;
-      const cityPrice = Number(cityRow.sell_price_min || 0);
-      if(cityPrice <= 0) continue;
+      const candidate = findCityCandidate(byKey, meta.itemId, city, bmQuality, cfg.ustQualityEslemeAktif);
+      if(!candidate) continue;
 
-      satirlar.push({
+      const row = {
         itemId: meta.itemId,
         itemNameEn: meta.itemNameEn,
         itemNameTr: meta.itemNameTr,
         tier: meta.tier ?? detectTierFromItemId(meta.itemId) ?? 0,
         enchant: meta.enchant ?? detectEnchantFromItemId(meta.itemId),
-        quality: meta.quality,
+        quality: bmQuality,
+        cityQualityUsed: candidate.cityQualityUsed,
         category: meta.category || "Other",
         mainCategory: meta.mainCategory || "Other",
         sourceCity: city,
+        cityPrice: candidate.cityPrice,
+        bmPrice,
+        cityAgeMin: candidate.cityAgeMin,
+        bmAgeMin
+      };
 
-        cityPrice,
-        bmPrice: Number(bm.buy_price_max || 0),
+      if(
+        !bestCity ||
+        row.cityPrice < bestCity.cityPrice ||
+        (row.cityPrice === bestCity.cityPrice && row.cityAgeMin < bestCity.cityAgeMin)
+      ){
+        bestCity = row;
+      }
+    }
 
-        cityAgeMin: dkFark(cityRow.sell_price_min_date),
-        bmAgeMin: enTazeTarihDakika(bm)
-      });
+    if(bestCity){
+      bestRowsMap.set(`${bestCity.itemId}|${bestCity.quality}`, bestCity);
     }
   }
 
-  sonUretilenSatir = satirlar.length;
-  return satirlar;
+  const rows = [...bestRowsMap.values()];
+  sonUretilenSatir = rows.length;
+  veriKirli = false;
+  veriBirKereYuklendi = true;
+  sonVeriZamani = Date.now();
+
+  LIVE_CACHE.set(sig, {
+    ts: Date.now(),
+    fetchedAt: sonVeriZamani,
+    rows: cloneRows(rows),
+    meta: {
+      sonApiHamKayit,
+      sonApiBmSatir,
+      sonApiSehirSatir,
+      sonUretilenSatir,
+      sonBmDoluSayisi
+    }
+  });
+
+  updateStatus(`Canlı veri hazır • ${trNum(rows.length)} fırsat`, "ok");
+  return rows;
 }
 
 function satirlariHesapla(rows, cfg){
@@ -1002,14 +1160,17 @@ function satirlariFiltrele(rows, cfg){
     if(r.netProfit < esik.minNet) return false;
     if(r.profitPercent < esik.minPct) return false;
 
+    if(r.cityAgeMin > cfg.maxCityAgeMin) return false;
+    if(r.bmAgeMin > cfg.maxBmAgeMin) return false;
+
     if(cfg.tierler.length && !cfg.tierler.includes(r.tier)) return false;
     if(cfg.enchantlar.length && !cfg.enchantlar.includes(r.enchant)) return false;
     if(cfg.qualities.length && !cfg.qualities.includes(r.quality)) return false;
-    if(cfg.anaKategoriler.length && !cfg.anaKategoriler.includes(r.mainCategory)) return false;
+    if(!AUTO_MAIN_CATEGORIES.includes(r.mainCategory)) return false;
     if(cfg.sehirler.length && !cfg.sehirler.includes(r.sourceCity)) return false;
 
     if(cfg.arama){
-      const hay = `${r.itemNameTr || ""} ${r.itemNameEn || ""} ${r.itemId || ""} ${mainCatUi(r.mainCategory)} ${r.sourceCity} q${r.quality} ${qLabel(r.quality,"tr")} ${qLabel(r.quality,"en")}`.toLowerCase();
+      const hay = `${r.itemNameTr || ""} ${r.itemNameEn || ""} ${r.itemId || ""} ${mainCatUi(r.mainCategory)} ${r.sourceCity} q${r.quality} ${qLabel(r.quality,"tr")} ${qLabel(r.quality,"en")} cityq${r.cityQualityUsed}`.toLowerCase();
       if(!hay.includes(cfg.arama)) return false;
     }
     return true;
@@ -1027,7 +1188,7 @@ function satirlariFiltrele(rows, cfg){
     return gecerliSiralama.dir === "asc" ? av - bv : bv - av;
   });
 
-  return out.slice(0, Math.max(1, cfg.sonucLimiti));
+  return out.slice(0, cfg.sonucLimiti);
 }
 
 function tabloyuCiz(rows){
@@ -1035,10 +1196,11 @@ function tabloyuCiz(rows){
   tb.innerHTML = "";
 
   if(!rows.length){
-    tb.innerHTML = `<tr><td colspan="12" style="padding:16px;color:#9aa4b2;">Sonuç bulunamadı. (Filtre çok sıkı olabilir veya BM buy yok)</td></tr>`;
+    tb.innerHTML = `<tr><td colspan="13" style="padding:16px;color:#9aa4b2;">Sonuç bulunamadı. Filtre çok sıkı olabilir veya canlı BM buy yoktur.</td></tr>`;
     return;
   }
 
+  const fragment = document.createDocumentFragment();
   for(const r of rows){
     const tr = document.createElement("tr");
     tr.innerHTML = `
@@ -1047,6 +1209,7 @@ function tabloyuCiz(rows){
       <td>.${Number(r.enchant || 0)}</td>
       <td>${mainCatUi(r.mainCategory)}</td>
       <td>${r.sourceCity}</td>
+      <td>Q${r.cityQualityUsed}</td>
       <td>${trNum(Math.round(r.cityPrice))}</td>
       <td>${trNum(Math.round(r.bmPrice))}</td>
       <td class="${yasClass(r.cityAgeMin)}">${sureText(r.cityAgeMin)}</td>
@@ -1055,8 +1218,9 @@ function tabloyuCiz(rows){
       <td class="${r.netProfit >= 0 ? 'profit' : 'loss'}">${trNum(Math.round(r.netProfit))}</td>
       <td class="${r.profitPercent >= 0 ? 'profit' : 'loss'}">${pct(r.profitPercent)}</td>
     `;
-    tb.appendChild(tr);
+    fragment.appendChild(tr);
   }
+  tb.appendChild(fragment);
 }
 
 function mobilKartlariCiz(rows){
@@ -1066,10 +1230,11 @@ function mobilKartlariCiz(rows){
   wrap.innerHTML = "";
 
   if(!rows.length){
-    wrap.innerHTML = `<div class="mobile-empty">Sonuç bulunamadı. (Filtre çok sıkı olabilir veya BM buy yok)</div>`;
+    wrap.innerHTML = `<div class="mobile-empty">Sonuç bulunamadı. Filtre çok sıkı olabilir veya canlı BM buy yoktur.</div>`;
     return;
   }
 
+  const fragment = document.createDocumentFragment();
   for(const r of rows){
     const netCls = r.netProfit >= 0 ? "profit" : "loss";
     const pctCls = r.profitPercent >= 0 ? "profit" : "loss";
@@ -1095,6 +1260,11 @@ function mobilKartlariCiz(rows){
         <div class="mc-row">
           <div class="mc-label">Tier / Enchant</div>
           <div class="mc-val">${r.tier ? "T"+r.tier : "-"} / .${Number(r.enchant || 0)}</div>
+        </div>
+
+        <div class="mc-row">
+          <div class="mc-label">Şehir Q / BM Q</div>
+          <div class="mc-val">Q${r.cityQualityUsed} / Q${r.quality}</div>
         </div>
 
         <div class="mc-row">
@@ -1127,8 +1297,9 @@ function mobilKartlariCiz(rows){
         </div>
       </div>
     `;
-    wrap.appendChild(card);
+    fragment.appendChild(card);
   }
+  wrap.appendChild(fragment);
 }
 
 function statsCiz(tumRows, gorunenRows){
@@ -1139,15 +1310,15 @@ function statsCiz(tumRows, gorunenRows){
   const uniqItem = new Set(gorunenRows.map(x => `${x.itemId}|${x.quality}`)).size;
 
   document.getElementById("stats").innerHTML = `
-    <div class="stat"><div class="label">Toplam Satır</div><div class="val">${trNum(toplam)}</div></div>
-    <div class="stat"><div class="label">Görünen Satır</div><div class="val">${trNum(gorunenRows.length)}</div></div>
-    <div class="stat"><div class="label">Benzersiz İtem (Q dahil)</div><div class="val">${trNum(uniqItem)}</div></div>
+    <div class="stat"><div class="label">Toplam Fırsat</div><div class="val">${trNum(toplam)}</div></div>
+    <div class="stat"><div class="label">Ana Sayfa</div><div class="val">Top ${trNum(gorunenRows.length)}</div></div>
+    <div class="stat"><div class="label">Benzersiz İtem</div><div class="val">${trNum(uniqItem)}</div></div>
     <div class="stat"><div class="label">En İyi Net Kâr</div><div class="val">${trNum(Math.round(enIyi))}</div></div>
     <div class="stat"><div class="label">Ort. Net / Kâr %</div><div class="val">${trNum(Math.round(ortNet))} / ${(ortYuz*100).toFixed(1)}%</div></div>
   `;
 
   document.getElementById("sonucSayisiHap").textContent = `${gorunenRows.length} sonuç`;
-  document.getElementById("bmDoluHap").textContent = `${sonBmDoluSayisi} BM kayıt`;
+  document.getElementById("bmDoluHap").textContent = `${trNum(sonBmDoluSayisi)} BM kayıt`;
 
   document.getElementById("apiOzet").textContent =
     `API özet: Ham ${trNum(sonApiHamKayit)} • BM ${trNum(sonApiBmSatir)} • Şehir ${trNum(sonApiSehirSatir)} • Üretilen ${trNum(sonUretilenSatir)}`;
@@ -1161,38 +1332,52 @@ function kesintiChipGuncelle(){
 
 function tumunuYenidenCiz(){
   const cfg = cfgOku();
+
+  document.getElementById("sonucLimiti").value = Math.min(MAX_RESULT_LIMIT, cfg.sonucLimiti);
+
   const hesapli = satirlariHesapla(hamVeri, cfg);
   gorunenVeri = satirlariFiltrele(hesapli, cfg);
+
   tabloyuCiz(gorunenVeri);
   mobilKartlariCiz(gorunenVeri);
   statsCiz(hesapli, gorunenVeri);
   kesintiChipGuncelle();
+  sonGuncellemeYaz();
 
   const map = {
     itemNameUi:"İtem", tier:"Tier", enchant:"Enchant", mainCategoryUi:"Kategori", sourceCity:"Kaynak Şehir",
-    cityPrice:"Şehir Fiyatı", bmPrice:"BM Fiyatı", cityAgeMin:"Şehir Veri Yaşı", bmAgeMin:"BM Veri Yaşı",
-    grossProfit:"Brüt Kâr", netProfit:"Net Kâr", profitPercent:"Kâr %"
+    cityQualityUsed:"Şehir Q", cityPrice:"Şehir Fiyatı", bmPrice:"BM Fiyatı", cityAgeMin:"Şehir Veri Yaşı",
+    bmAgeMin:"BM Veri Yaşı", grossProfit:"Brüt Kâr", netProfit:"Net Kâr", profitPercent:"Kâr %"
   };
   document.getElementById("siralamaBilgi").textContent =
-    `${map[gecerliSiralama.key] || gecerliSiralama.key} ${gecerliSiralama.dir === "desc" ? "↓" : "↑"}`;
+    `${map[gecerliSiralama.key] || gecerliSiralama.key} ${gecerliSiralama.dir === "desc" ? "↓" : "↑"} • İlk ${cfg.sonucLimiti}`;
+
+  if(!hamVeri.length && !veriBirKereYuklendi){
+    updateStatus("İlk canlı veri yükleniyor...", "warn");
+  }else if(veriKirli){
+    updateStatus("Filtre değişti • veri yenileniyor...", "warn");
+  }
 }
 
-async function canliGuncelle(){
+async function canliGuncelle(forceLive=false){
   const btn = document.getElementById("veriGuncelleBtn");
   const eski = btn.textContent;
   btn.disabled = true;
   btn.textContent = "Veri çekiliyor...";
 
   try{
-    hamVeri = await aodpFiyatlariniGetir();
-    document.getElementById("sonGuncellemeMetni").textContent = new Date().toLocaleTimeString("tr-TR");
+    hamVeri = await aodpFiyatlariniGetir(forceLive);
     tumunuYenidenCiz();
 
     if(!hamVeri.length){
-      alert("Canlı veri geldi ama eşleşen kayıt yok. Filtreleri genişletmeyi dene.");
+      updateStatus("Canlı veri geldi ama eşleşen fırsat bulunamadı", "warn");
     }
   }catch(err){
+    if(err?.name === "AbortError"){
+      return;
+    }
     console.error(err);
+    updateStatus("Canlı veri çekme hatası", "bad");
     alert("Canlı veri çekme hatası: " + err.message);
   }finally{
     btn.disabled = false;
@@ -1219,14 +1404,17 @@ function dilAyarla(d){
   document.getElementById("dilSec").value = aktifDil;
   tumunuYenidenCiz();
 }
-
-/* İlk açılışta sadece Çantalar seçili olsun (ilk fetch yükünü azaltır) */
 function ilkAcilisKategoriAyarla(){
-  const katlar = document.querySelectorAll(".anaKatSec");
-  if(!katlar.length) return;
-  katlar.forEach(cb => {
-    cb.checked = (cb.value === "Bags");
-  });
+  return;
+}
+
+const debouncedRender = debounce(tumunuYenidenCiz, 140);
+const debouncedDataRefresh = debounce(() => canliGuncelle(false), 900);
+
+function veriKirletVeYenile(){
+  veriKirli = true;
+  tumunuYenidenCiz();
+  debouncedDataRefresh();
 }
 
 function bindEvents(){
@@ -1234,25 +1422,26 @@ function bindEvents(){
   if(toggle){
     toggle.addEventListener("click", ()=>solAyar(!solAcikMi()));
   }
-  document.getElementById("veriGuncelleBtn").addEventListener("click", canliGuncelle);
 
-  document.getElementById("aramaKutusu").addEventListener("input", tumunuYenidenCiz);
+  document.getElementById("veriGuncelleBtn").addEventListener("click", ()=>canliGuncelle(true));
+
+  document.getElementById("aramaKutusu").addEventListener("input", debouncedRender);
   document.getElementById("dilSec").addEventListener("change", e=>dilAyarla(e.target.value));
 
   [
-    "minNetKar","minKarYuzde","tierBazliEsik","sonucLimiti",
-    "premiumVergisiAktif","islemUcretiAktif"
-  ].forEach(id => document.getElementById(id).addEventListener("change", tumunuYenidenCiz));
+    "minNetKar","minKarYuzde","tierBazliEsik","maxCityAgeMin","maxBmAgeMin",
+    "sonucLimiti","premiumVergisiAktif","islemUcretiAktif","ustQualityEslemeAktif"
+  ].forEach(id => document.getElementById(id).addEventListener("change", debouncedRender));
 
-  [".tierSec",".enchSec",".qualSec",".sehirSec",".anaKatSec"].forEach(sel => {
-    document.querySelectorAll(sel).forEach(el => el.addEventListener("change", tumunuYenidenCiz));
+  [".tierSec",".enchSec",".qualSec",".sehirSec"].forEach(sel => {
+    document.querySelectorAll(sel).forEach(el => el.addEventListener("change", veriKirletVeYenile));
   });
 
   document.getElementById("sunucu").addEventListener("change", ()=>{
     hamVeri = [];
     sonApiHamKayit = sonApiBmSatir = sonApiSehirSatir = sonUretilenSatir = sonBmDoluSayisi = 0;
-    document.getElementById("sonGuncellemeMetni").textContent = "-";
-    tumunuYenidenCiz();
+    sonVeriZamani = null;
+    veriKirletVeYenile();
   });
 
   document.querySelectorAll("th[data-sort]").forEach(th=>{
@@ -1279,17 +1468,15 @@ async function init(){
   bindEvents();
   solDurumYukle();
 
-  if(window.innerWidth <= 768){
-    document.getElementById("sonucLimiti").value = 150;
-  }
+  document.getElementById("sonucLimiti").value = 100;
 
   await katalogYukle();
   dilAyarla(aktifDil);
   tumunuYenidenCiz();
-
-  await canliGuncelle();
+  await canliGuncelle(false);
 }
 init();
+
 </script>
 </body>
 </html>
