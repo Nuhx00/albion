@@ -703,8 +703,11 @@ let aktifDil = localStorage.getItem("bmFlip_dil") || "tr";
 const MAX_RESULT_LIMIT = 100;
 const CACHE_TTL_MS = 120000;
 const BM_KONUM = "Black Market";
-const ITEM_CHUNK_SIZE = 120;
-const REQUEST_DELAY_MS = 450;
+const ITEM_CHUNK_SIZE = 220;
+const REQUEST_DELAY_MS = 220;
+const FETCH_CONCURRENCY = 2;
+const MAX_429_RETRIES = 4;
+const RETRY_BACKOFF_MS = 10000;
 const AUTO_FETCH_ON_LOAD = false;
 const AUTO_REFRESH_ON_FILTER_CHANGE = false;
 
@@ -744,6 +747,7 @@ const MAIN_CAT_EN = {
   Offhands: "Offhands"
 };
 const AUTO_MAIN_CATEGORIES = ["Weapons","Armors","Bags","Capes","Offhands"];
+const DISPLAY_MAIN_CATEGORIES = [...AUTO_MAIN_CATEGORIES, "Unknown"];
 
 const AODP_HOSTS = {
   EU: "https://europe.albion-online-data.com",
@@ -807,6 +811,9 @@ function debounce(fn, delay=250){
 function cloneRows(rows){
   return rows.map(x => ({...x}));
 }
+function allowedMainCategory(mc){
+  return DISPLAY_MAIN_CATEGORIES.includes(mc);
+}
 
 function tierMinNetKar(t){ return t===5?30000 : t===6?60000 : t===7?120000 : t===8?250000 : 0; }
 function tierMinPct(t){ return t===5?0.10 : t===6?0.12 : t===7?0.15 : t===8?0.18 : 0; }
@@ -868,7 +875,18 @@ function detectEnchantFromItemId(itemId){
   return m ? Number(m[1]) : 0;
 }
 
-function toMainCategory(cat){
+function inferMainCategoryFromBaseId(baseId){
+  const id = String(baseId || "").toUpperCase();
+  if(!id) return "Other";
+  if(id.startsWith("MAIN_") || id.startsWith("2H_") || id.startsWith("MAINHAND_")) return "Weapons";
+  if(id.startsWith("OFF_") || id.includes("_SHIELD") || id.includes("_TORCH") || id.includes("_BOOK") || id.includes("_HORN")) return "Offhands";
+  if(id.includes("CAPE")) return "Capes";
+  if(id === "BAG" || id.includes("_BAG")) return "Bags";
+  if(id.startsWith("HEAD_") || id.startsWith("ARMOR_") || id.startsWith("SHOES_")) return "Armors";
+  return "Other";
+}
+
+function toMainCategory(cat, baseId){
   const c = (cat || "").toLowerCase();
 
   if (c === "weapon") return "Weapons";
@@ -877,13 +895,13 @@ function toMainCategory(cat){
   if (c === "cape") return "Capes";
   if (c === "offhand") return "Offhands";
 
-  if (c.includes("weapon")) return "Weapons";
-  if (c.includes("head") || c.includes("chest") || c.includes("shoe") || c.includes("armor")) return "Armors";
+  if (c.includes("weapon") || c.includes("main hand") || c.includes("mainhand") || c.includes("2h")) return "Weapons";
+  if (c.includes("head") || c.includes("chest") || c.includes("shoe") || c.includes("armor") || c.includes("helmet") || c.includes("hood") || c.includes("cap") || c.includes("robe") || c.includes("jacket") || c.includes("boots") || c.includes("sandals")) return "Armors";
   if (c.includes("bag")) return "Bags";
   if (c.includes("cape")) return "Capes";
-  if (c.includes("offhand") || c.includes("off-hand")) return "Offhands";
+  if (c.includes("offhand") || c.includes("off-hand") || c.includes("shield") || c.includes("torch") || c.includes("book") || c.includes("horn")) return "Offhands";
 
-  return "Other";
+  return inferMainCategoryFromBaseId(baseId);
 }
 
 function updateStatus(msg, type="normal"){
@@ -951,7 +969,7 @@ function normalizeCatalog(raw){
         nameEn: x.nameEn || x.name_en || x.name || baseId,
         nameTr: x.nameTr || x.name_tr || x.tr || x.nameEn || x.name || baseId,
         category,
-        mainCategory: toMainCategory(category)
+        mainCategory: toMainCategory(category, baseId)
       };
     });
 }
@@ -1079,20 +1097,34 @@ async function aodpFiyatlariniGetir(forceLive=false){
 
   const locations = [...new Set([...cfg.sehirler, BM_KONUM])].join(",");
 
-  const safeFetchJson = async (url) => {
-    const res = await fetch(url, {
-      cache: "no-store",
-      signal: controller.signal,
-      headers: {
-        "Cache-Control": "no-cache, no-store, max-age=0",
-        "Pragma": "no-cache"
-      }
-    });
-    if(!res.ok) throw new Error(`AODP HTTP ${res.status}`);
-    return res.json();
-  };
-
   const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+  const safeFetchJson = async (url, progressLabel = "") => {
+    let attempt = 0;
+    while(true){
+      const res = await fetch(url, {
+        cache: "no-store",
+        signal: controller.signal,
+        headers: {
+          "Cache-Control": "no-cache, no-store, max-age=0",
+          "Pragma": "no-cache"
+        }
+      });
+
+      if(res.ok) return res.json();
+
+      if(res.status === 429 && attempt < MAX_429_RETRIES){
+        const retryAfter = Number(res.headers.get("Retry-After") || 0);
+        const waitMs = retryAfter > 0 ? retryAfter * 1000 : RETRY_BACKOFF_MS * (attempt + 1);
+        updateStatus(`Rate limit var${progressLabel ? " • " + progressLabel : ""} • ${Math.ceil(waitMs/1000)} sn bekleniyor`, "warn");
+        attempt += 1;
+        await sleep(waitMs);
+        continue;
+      }
+
+      throw new Error(`AODP HTTP ${res.status}`);
+    }
+  };
 
   sonBmDoluSayisi = 0;
   sonApiHamKayit = 0;
@@ -1102,53 +1134,60 @@ async function aodpFiyatlariniGetir(forceLive=false){
   const bmRows = [];
   const byKey = new Map();
 
-  for(let i=0;i<itemChunks.length;i++){
+  for(let start=0; start<itemChunks.length; start += FETCH_CONCURRENCY){
     if(controller.signal.aborted || istekNo !== aktifIstekNo){
       throw new DOMException("İstek iptal edildi", "AbortError");
     }
 
-    updateStatus(`Veri çekiliyor... ${i + 1}/${itemChunks.length}`, "warn");
+    const group = itemChunks.slice(start, start + FETCH_CONCURRENCY);
+    const rangeStart = start + 1;
+    const rangeEnd = Math.min(start + group.length, itemChunks.length);
+    updateStatus(`Veri çekiliyor... ${rangeStart}-${rangeEnd}/${itemChunks.length}`, "warn");
 
-    const itemParam = itemChunks[i].join(",");
-    const url = `${host}/api/v2/stats/prices/${encodeURIComponent(itemParam)}.json?locations=${encodeURIComponent(locations)}&qualities=${encodeURIComponent(requestQualities.join(","))}&_ts=${Date.now()}_${Math.random().toString(36).slice(2,7)}`;
-    const json = await safeFetchJson(url);
+    const responses = await Promise.all(group.map(async (ids, localIndex) => {
+      const globalIndex = start + localIndex;
+      const itemParam = ids.join(",");
+      const url = `${host}/api/v2/stats/prices/${encodeURIComponent(itemParam)}.json?locations=${encodeURIComponent(locations)}&qualities=${encodeURIComponent(requestQualities.join(","))}&_ts=${Date.now()}_${Math.random().toString(36).slice(2,7)}`;
+      return safeFetchJson(url, `${globalIndex + 1}/${itemChunks.length}`);
+    }));
 
-    if(Array.isArray(json)){
-      sonApiHamKayit += json.length;
+    for(const json of responses){
+      if(Array.isArray(json)){
+        sonApiHamKayit += json.length;
 
-      for(const r of json){
-        const q = Number(r.quality || 1);
-        if(r.city === BM_KONUM){
-          sonApiBmSatir += 1;
-          const bmPrice = Number(r.buy_price_max || 0);
-          if(bmPrice <= 0) continue;
-          if(bmQualities.length && !bmQualities.includes(q)) continue;
+        for(const r of json){
+          const q = Number(r.quality || 1);
+          if(r.city === BM_KONUM){
+            sonApiBmSatir += 1;
+            const bmPrice = Number(r.buy_price_max || 0);
+            if(bmPrice <= 0) continue;
+            if(bmQualities.length && !bmQualities.includes(q)) continue;
 
-          let meta = metaByItemId.get(r.item_id);
-          if(!meta){
-            meta = {
-              itemId: r.item_id,
-              itemNameEn: r.item_id,
-              itemNameTr: r.item_id,
-              tier: detectTierFromItemId(r.item_id) ?? 0,
-              enchant: detectEnchantFromItemId(r.item_id),
-              category: "Other",
-              mainCategory: "Other"
-            };
+            let meta = metaByItemId.get(r.item_id);
+            if(!meta){
+              meta = {
+                itemId: r.item_id,
+                itemNameEn: r.item_id,
+                itemNameTr: r.item_id,
+                tier: detectTierFromItemId(r.item_id) ?? 0,
+                enchant: detectEnchantFromItemId(r.item_id),
+                category: "Unknown",
+                mainCategory: "Unknown"
+              };
+            }
+            if(!allowedMainCategory(meta.mainCategory)) continue;
+
+            sonBmDoluSayisi += 1;
+            bmRows.push(r);
+          } else if(cfg.sehirler.includes(r.city)) {
+            sonApiSehirSatir += 1;
+            byKey.set(`${r.item_id}|${r.city}|${q}`, r);
           }
-          if(meta.mainCategory === "Other") continue;
-          if(!AUTO_MAIN_CATEGORIES.includes(meta.mainCategory)) continue;
-
-          sonBmDoluSayisi += 1;
-          bmRows.push(r);
-        } else if(cfg.sehirler.includes(r.city)) {
-          sonApiSehirSatir += 1;
-          byKey.set(`${r.item_id}|${r.city}|${q}`, r);
         }
       }
     }
 
-    if(i < itemChunks.length - 1) await sleep(REQUEST_DELAY_MS);
+    if(start + FETCH_CONCURRENCY < itemChunks.length) await sleep(REQUEST_DELAY_MS);
   }
 
   if(controller.signal.aborted || istekNo !== aktifIstekNo){
@@ -1178,7 +1217,7 @@ async function aodpFiyatlariniGetir(forceLive=false){
     }
 
     if(meta.mainCategory === "Other") continue;
-    if(!AUTO_MAIN_CATEGORIES.includes(meta.mainCategory)) continue;
+    if(!allowedMainCategory(meta.mainCategory)) continue;
 
     let bestCity = null;
     for(const city of cfg.sehirler){
@@ -1275,7 +1314,7 @@ function satirlariFiltrele(rows, cfg){
     if(cfg.tierler.length && !cfg.tierler.includes(r.tier)) return false;
     if(cfg.enchantlar.length && !cfg.enchantlar.includes(r.enchant)) return false;
     if(cfg.qualities.length && !cfg.qualities.includes(r.quality)) return false;
-    if(!AUTO_MAIN_CATEGORIES.includes(r.mainCategory)) return false;
+    if(!allowedMainCategory(r.mainCategory)) return false;
     if(cfg.sehirler.length && !cfg.sehirler.includes(r.sourceCity)) return false;
 
     if(cfg.arama){
