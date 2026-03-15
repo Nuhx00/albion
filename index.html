@@ -231,6 +231,61 @@
       font-size:13px;
     }
 
+
+    .item-cell{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+    .item-thumb{
+      width:42px;
+      height:42px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,.08);
+      background:#111722;
+      object-fit:contain;
+      flex:0 0 42px;
+    }
+    .item-meta{
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+    }
+    .item-name-row{
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:6px;
+      min-width:0;
+    }
+    .item-name{
+      font-weight:700;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+      max-width:100%;
+    }
+    .item-sub{
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.2;
+    }
+    .mobile-card .mc-head{
+      display:flex;
+      justify-content:flex-start;
+      align-items:center;
+      gap:10px;
+      margin-bottom:8px;
+    }
+    .mobile-card .mc-head .item-thumb{
+      width:46px;
+      height:46px;
+      flex-basis:46px;
+      border-radius:12px;
+    }
+
     @media (max-width: 1200px){
       .app,.app.kapali{grid-template-columns:1fr}
       .ustbar{grid-template-columns:1fr}
@@ -711,6 +766,29 @@ function itemUi(row){
     : (row.itemNameTr || row.itemNameEn || row.itemId);
 }
 function qBadge(row){ return `<span class="qbadge">Q${row.quality} ${qLabel(row.quality)}</span>`; }
+
+function itemImageUrl(row){
+  const quality = Math.min(5, Math.max(1, Number(row?.quality || 1)));
+  return `https://render.albiononline.com/v1/item/${encodeURIComponent(row.itemId)}.png?quality=${quality}&size=64&locale=en`;
+}
+function itemGorselliHtml(row){
+  const ad = itemUi(row);
+  const cityQ = qLabel(row.cityQualityUsed || row.quality || 1);
+  const bmQ = qLabel(row.quality || 1);
+  return `
+    <div class="item-cell">
+      <img class="item-thumb" src="${itemImageUrl(row)}" alt="${ad}" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.visibility='hidden'">
+      <div class="item-meta">
+        <div class="item-name-row">
+          <span class="item-name">${ad}</span>
+          ${qBadge(row)}
+        </div>
+        <div class="item-sub">${cityQ} → BM: ${bmQ}</div>
+      </div>
+    </div>
+  `;
+}
+
 function mainCatUi(code){
   return aktifDil === "en" ? (MAIN_CAT_EN[code] || code) : (MAIN_CAT_TR[code] || code);
 }
@@ -1204,7 +1282,7 @@ function tabloyuCiz(rows){
   for(const r of rows){
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${itemUi(r)}${qBadge(r)}</td>
+      <td>${itemGorselliHtml(r)}</td>
       <td>${r.tier ? "T"+r.tier : "-"}</td>
       <td>.${Number(r.enchant || 0)}</td>
       <td>${mainCatUi(r.mainCategory)}</td>
@@ -1243,6 +1321,7 @@ function mobilKartlariCiz(rows){
     card.className = "mobile-card";
     card.innerHTML = `
       <div class="mc-head">
+        <img class="item-thumb" src="${itemImageUrl(r)}" alt="${itemUi(r)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.visibility='hidden'">
         <div class="mc-title">${itemUi(r)} ${qBadge(r)}</div>
       </div>
 
