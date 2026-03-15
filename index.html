@@ -645,7 +645,7 @@
         <div style="font-weight:700;margin-bottom:4px;">BM Flip</div>
         <div class="small muted">Sıralama: <span id="siralamaBilgi">Net Kâr ↓ • Tüm itemler</span></div>
       </div>
-      <div class="panel"><span class="chip">Kaynak: <strong id="veriKaynakMetni" style="color:var(--text)">AODP Canlı</strong></span></div>
+      <div class="panel"><span class="chip">Kaynak: <strong id="veriKaynakMetni" style="color:var(--text)">AODP Canlı (yavaş mod)</strong></span></div>
       <div class="panel"><span class="chip">Son Güncelleme: <strong id="sonGuncellemeMetni" style="color:var(--text)">-</strong></span></div>
       <div class="panel"><button id="veriGuncelleBtn" class="yesil">Verileri Güncelle</button></div>
     </div>
@@ -703,6 +703,10 @@ let aktifDil = localStorage.getItem("bmFlip_dil") || "tr";
 const MAX_RESULT_LIMIT = 100;
 const CACHE_TTL_MS = 120000;
 const BM_KONUM = "Black Market";
+const ITEM_CHUNK_SIZE = 120;
+const REQUEST_DELAY_MS = 450;
+const AUTO_FETCH_ON_LOAD = false;
+const AUTO_REFRESH_ON_FILTER_CHANGE = false;
 
 let fetchController = null;
 let aktifIstekNo = 0;
@@ -1065,13 +1069,15 @@ async function aodpFiyatlariniGetir(forceLive=false){
 
   const metaByItemId = new Map(adaylar.map(x => [x.itemId, x]));
   const uniqItemIds = [...new Set(adaylar.map(x => x.itemId))];
-  const bmChunks = chunk(uniqItemIds, 40);
+  const itemChunks = chunk(uniqItemIds, ITEM_CHUNK_SIZE);
 
   const bmQualities = [...cfg.qualities].sort((a,b)=>a-b);
   const minSelectedQuality = bmQualities.length ? Math.min(...bmQualities) : 1;
-  const cityQualities = cfg.ustQualityEslemeAktif
+  const requestQualities = cfg.ustQualityEslemeAktif
     ? [1,2,3,4,5].filter(q => q >= minSelectedQuality)
     : [...bmQualities];
+
+  const locations = [...new Set([...cfg.sehirler, BM_KONUM])].join(",");
 
   const safeFetchJson = async (url) => {
     const res = await fetch(url, {
@@ -1086,102 +1092,63 @@ async function aodpFiyatlariniGetir(forceLive=false){
     return res.json();
   };
 
-  if(controller.signal.aborted || istekNo !== aktifIstekNo){
-    throw new DOMException("İstek iptal edildi", "AbortError");
-  }
+  const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-  // 1) Önce sadece Black Market buy tarafını tara.
-  const bmRows = [];
-  const candidateItemIds = new Set();
   sonBmDoluSayisi = 0;
   sonApiHamKayit = 0;
   sonApiBmSatir = 0;
   sonApiSehirSatir = 0;
 
-  for(let i=0;i<bmChunks.length;i++){
-    if(controller.signal.aborted || istekNo !== aktifIstekNo){
-      throw new DOMException("İstek iptal edildi", "AbortError");
-    }
-
-    updateStatus(`BM taranıyor... ${i + 1}/${bmChunks.length}`, "warn");
-
-    const itemParam = bmChunks[i].join(",");
-    const url = `${host}/api/v2/stats/prices/${encodeURIComponent(itemParam)}.json?locations=${encodeURIComponent(BM_KONUM)}&qualities=${encodeURIComponent(bmQualities.join(","))}&_ts=${Date.now()}_${Math.random().toString(36).slice(2,7)}`;
-
-    const json = await safeFetchJson(url);
-    if(Array.isArray(json)){
-      sonApiHamKayit += json.length;
-      sonApiBmSatir += json.length;
-
-      for(const bm of json){
-        const bmPrice = Number(bm.buy_price_max || 0);
-        if(bm.city !== BM_KONUM || bmPrice <= 0) continue;
-
-        const bmQuality = Number(bm.quality || 1);
-        if(bmQualities.length && !bmQualities.includes(bmQuality)) continue;
-
-        let meta = metaByItemId.get(bm.item_id);
-        if(!meta){
-          meta = {
-            itemId: bm.item_id,
-            itemNameEn: bm.item_id,
-            itemNameTr: bm.item_id,
-            tier: detectTierFromItemId(bm.item_id) ?? 0,
-            enchant: detectEnchantFromItemId(bm.item_id),
-            category: "Other",
-            mainCategory: "Other"
-          };
-        }
-
-        if(meta.mainCategory === "Other") continue;
-        if(!AUTO_MAIN_CATEGORIES.includes(meta.mainCategory)) continue;
-
-        sonBmDoluSayisi += 1;
-        bmRows.push(bm);
-        candidateItemIds.add(bm.item_id);
-      }
-    }
-
-    await new Promise(resolve => setTimeout(resolve, 8));
-  }
-
-  if(!candidateItemIds.size){
-    sonUretilenSatir = 0;
-    veriKirli = false;
-    veriBirKereYuklendi = true;
-    sonVeriZamani = Date.now();
-    updateStatus("BM buy bulundu ama eşleşen fırsat çıkmadı", "warn");
-    return [];
-  }
-
-  // 2) Sadece BM'de aktif buy olan itemler için şehir sell tarafını çek.
-  const cityItemIds = [...candidateItemIds];
-  const cityChunks = chunk(cityItemIds, 40);
-  const cityLocations = cfg.sehirler.join(",");
+  const bmRows = [];
   const byKey = new Map();
 
-  for(let i=0;i<cityChunks.length;i++){
+  for(let i=0;i<itemChunks.length;i++){
     if(controller.signal.aborted || istekNo !== aktifIstekNo){
       throw new DOMException("İstek iptal edildi", "AbortError");
     }
 
-    updateStatus(`Şehir fiyatları çekiliyor... ${i + 1}/${cityChunks.length}`, "warn");
+    updateStatus(`Veri çekiliyor... ${i + 1}/${itemChunks.length}`, "warn");
 
-    const itemParam = cityChunks[i].join(",");
-    const url = `${host}/api/v2/stats/prices/${encodeURIComponent(itemParam)}.json?locations=${encodeURIComponent(cityLocations)}&qualities=${encodeURIComponent(cityQualities.join(","))}&_ts=${Date.now()}_${Math.random().toString(36).slice(2,7)}`;
-
+    const itemParam = itemChunks[i].join(",");
+    const url = `${host}/api/v2/stats/prices/${encodeURIComponent(itemParam)}.json?locations=${encodeURIComponent(locations)}&qualities=${encodeURIComponent(requestQualities.join(","))}&_ts=${Date.now()}_${Math.random().toString(36).slice(2,7)}`;
     const json = await safeFetchJson(url);
+
     if(Array.isArray(json)){
       sonApiHamKayit += json.length;
-      sonApiSehirSatir += json.length;
 
       for(const r of json){
         const q = Number(r.quality || 1);
-        byKey.set(`${r.item_id}|${r.city}|${q}`, r);
+        if(r.city === BM_KONUM){
+          sonApiBmSatir += 1;
+          const bmPrice = Number(r.buy_price_max || 0);
+          if(bmPrice <= 0) continue;
+          if(bmQualities.length && !bmQualities.includes(q)) continue;
+
+          let meta = metaByItemId.get(r.item_id);
+          if(!meta){
+            meta = {
+              itemId: r.item_id,
+              itemNameEn: r.item_id,
+              itemNameTr: r.item_id,
+              tier: detectTierFromItemId(r.item_id) ?? 0,
+              enchant: detectEnchantFromItemId(r.item_id),
+              category: "Other",
+              mainCategory: "Other"
+            };
+          }
+          if(meta.mainCategory === "Other") continue;
+          if(!AUTO_MAIN_CATEGORIES.includes(meta.mainCategory)) continue;
+
+          sonBmDoluSayisi += 1;
+          bmRows.push(r);
+        } else if(cfg.sehirler.includes(r.city)) {
+          sonApiSehirSatir += 1;
+          byKey.set(`${r.item_id}|${r.city}|${q}`, r);
+        }
       }
     }
 
-    await new Promise(resolve => setTimeout(resolve, 8));
+    if(i < itemChunks.length - 1) await sleep(REQUEST_DELAY_MS);
   }
 
   if(controller.signal.aborted || istekNo !== aktifIstekNo){
@@ -1495,7 +1462,7 @@ function tumunuYenidenCiz(){
     `${map[gecerliSiralama.key] || gecerliSiralama.key} ${gecerliSiralama.dir === "desc" ? "↓" : "↑"} • İlk ${cfg.sonucLimiti}`;
 
   if(!hamVeri.length && !veriBirKereYuklendi){
-    updateStatus("İlk canlı veri yükleniyor...", "warn");
+    updateStatus("Hazır. Veri Güncelle butonuna basınca tarama başlar.", "warn");
   }else if(veriKirli){
     updateStatus("Filtre değişti • veri yenileniyor...", "warn");
   }
@@ -1556,7 +1523,11 @@ const debouncedDataRefresh = debounce(() => canliGuncelle(false), 900);
 function veriKirletVeYenile(){
   veriKirli = true;
   tumunuYenidenCiz();
-  debouncedDataRefresh();
+  if(AUTO_REFRESH_ON_FILTER_CHANGE){
+    debouncedDataRefresh();
+  }else{
+    updateStatus("Filtre değişti • Veri Güncelle butonuna bas", "warn");
+  }
 }
 
 function bindEvents(){
@@ -1615,7 +1586,11 @@ async function init(){
   await katalogYukle();
   dilAyarla(aktifDil);
   tumunuYenidenCiz();
-  await canliGuncelle(false);
+  if(AUTO_FETCH_ON_LOAD){
+    await canliGuncelle(false);
+  }else{
+    updateStatus("Hazır. Veri Güncelle butonuna basınca tarama başlar.", "warn");
+  }
 }
 init();
 
